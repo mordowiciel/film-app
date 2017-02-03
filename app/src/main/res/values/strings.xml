@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FilmApp</string>
+
+    <string name="shared_prefs">shared_prefs_key</string>
+    <string name="saved_base_url">saved_base_url</string>
+    <string name="title_activity_movie_details">MovieDetails</string>
+    <string name="action_settings">Settings</string>
 </resources>
