@@ -7,6 +7,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,10 +67,12 @@ public class MovieDetails extends AppCompatActivity {
         TextView overviewView = (TextView) findViewById(R.id.movie_details_overview_textview);
         overviewView.setText(movieOverview);
 
+    }
 
-
-
-
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu){
+        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 }
