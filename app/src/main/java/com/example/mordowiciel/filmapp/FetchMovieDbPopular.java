@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class FetchMovieDbPopular extends AsyncTask<Void, Void, ArrayList<Movie>> {
+public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     ImageAdapter imageAdapter;
 
@@ -28,7 +28,7 @@ public class FetchMovieDbPopular extends AsyncTask<Void, Void, ArrayList<Movie>>
     }
 
     @Override
-    protected ArrayList<Movie> doInBackground(Void... params) {
+    protected ArrayList<Movie> doInBackground(String... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -48,7 +48,7 @@ public class FetchMovieDbPopular extends AsyncTask<Void, Void, ArrayList<Movie>>
             Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon().
                     appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY).
                     appendQueryParameter(LANGUAGE_PARAM, "en-US").
-                    appendQueryParameter(SORTING_PARAM, "popularity.desc").
+                    appendQueryParameter(SORTING_PARAM, params[0]).
                     appendQueryParameter(ADULT_PARAM, "true").
                     appendQueryParameter(INCLUDE_VIDEO_PARAM, "false").
                     appendQueryParameter(PAGE_PARAM, "1").

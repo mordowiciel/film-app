@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -40,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Movie> movieList = new ArrayList<Movie>();
 
         //Create a GridView and attach adapter to it.
-        GridView gridView = (GridView) findViewById(R.id.grid_view);
+        GridView gridView = (GridView) findViewById(R.id.content_main);
         final ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_item, movieList);
         gridView.setAdapter(imageAdapter);
 
         //Create and execute ASyncTask.
         FetchMovieDbPopular fetchPopular = new FetchMovieDbPopular(imageAdapter);
-        fetchPopular.execute();
+        fetchPopular.execute("popularity.desc");
 
         //Create a click listener for a particular movie and start a new detailed movie activity.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu){
+        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
