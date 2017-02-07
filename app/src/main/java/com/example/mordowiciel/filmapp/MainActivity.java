@@ -1,33 +1,20 @@
 package com.example.mordowiciel.filmapp;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,19 +24,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Create an ArrayList of movies for ArrayAdapter.
-        ArrayList<Movie> movieList = new ArrayList<Movie>();
+        //Create a toolbar for activity.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //Create a GridView and attach adapter to it.
+        //Create a gridView and attach an adapter to it.
+        ArrayList<Movie> movieArray = new ArrayList<>();
         GridView gridView = (GridView) findViewById(R.id.content_main);
-        final ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_item, movieList);
+        final ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_item, movieArray);
         gridView.setAdapter(imageAdapter);
 
-        //Create and execute ASyncTask.
+        //Create ASyncTask and execute it.
         FetchMovieDbPopular fetchPopular = new FetchMovieDbPopular(imageAdapter);
         fetchPopular.execute("popularity.desc");
 
-        //Create a click listener for a particular movie and start a new detailed movie activity.
+        //Create a click listener for a particular movie.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -61,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 String movieReleaseDate = imageAdapter.getItem(position).getMovieReleaseDate();
                 double movieVoteAverage = imageAdapter.getItem(position).getMovieVoteAverage();
                 String moviePosterLink = imageAdapter.getItem(position).getMoviePosterLink();
-
 
                 Bundle intentExtras = new Bundle();
                 intentExtras.putString("MOVIE_TITLE", movieTitle);
@@ -76,14 +64,29 @@ public class MainActivity extends AppCompatActivity {
 
                 startActivity(intent);
             }
-
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu){
-        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.action_settings:
+                return true;
+
+            case R.id.action_sort:
+                //Add showing a sorting dialog.
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

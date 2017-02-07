@@ -60,10 +60,4 @@ public class MovieDetails extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu (Menu menu){
-        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
 }

@@ -1,10 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.mordowiciel.filmapp.MovieDetails">
+    tools:context="com.example.mordowiciel.filmapp.MainActivity">
+
+    <!-- Settings, always in overflow. -->
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <!-- Sorting button, always show in ActionBar. -->
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort"
+        android:title="Sort by"
+        app:showAsAction="always" />
+
+
 </menu>
