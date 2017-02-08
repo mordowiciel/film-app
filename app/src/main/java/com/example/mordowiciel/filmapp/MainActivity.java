@@ -1,11 +1,8 @@
 package com.example.mordowiciel.filmapp;
 
-import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,7 +13,11 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements SortbyFragment.NoticeSortingDialogFragment {
+
+    private FetchMovieDbPopular fetchPopular;
+    private ImageAdapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
         //Create a gridView and attach an adapter to it.
         ArrayList<Movie> movieArray = new ArrayList<>();
         GridView gridView = (GridView) findViewById(R.id.content_main);
-        final ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_item, movieArray);
+        imageAdapter = new ImageAdapter(this, R.layout.image_item, movieArray);
         gridView.setAdapter(imageAdapter);
 
         //Create ASyncTask and execute it.
-        FetchMovieDbPopular fetchPopular = new FetchMovieDbPopular(imageAdapter);
+        fetchPopular = new FetchMovieDbPopular(imageAdapter);
         fetchPopular.execute("popularity.desc");
 
         //Create a click listener for a particular movie.
@@ -67,6 +68,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    public void showSortingDialog(){
+        SortbyFragment sortingFragment = new SortbyFragment();
+        sortingFragment.show(getFragmentManager(), "sorting");
+    }
+
+    // Listeners for options provided in sorting dialog.
+    @Override
+    public void onDialogPopularityClick(DialogFragment dialogFragment) {
+        fetchPopular = new FetchMovieDbPopular(imageAdapter);
+        fetchPopular.execute("popularity.desc");
+    }
+
+    public void onDialogRatingClick(DialogFragment dialogFragment) {
+        fetchPopular = new FetchMovieDbPopular(imageAdapter);
+        fetchPopular.execute("vote_average.desc");
+    }
+
     @Override
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -82,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_sort:
-                //Add showing a sorting dialog.
+                showSortingDialog();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

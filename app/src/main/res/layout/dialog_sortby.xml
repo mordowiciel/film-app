@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by"
+        android:padding="4dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/sortby_popularity_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Popularity"
+        android:padding="4dp"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_popular"
+        android:drawablePadding="10dp"/>
+
+    <TextView
+        android:id="@+id/sortby_rating_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="Rating"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_rating"
+        android:drawablePadding="10dp"/>
+
+</LinearLayout>
