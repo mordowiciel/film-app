@@ -3,8 +3,6 @@ package com.example.mordowiciel.filmapp;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.GridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie>> {
+public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<MovieClass>> {
 
     ImageAdapter imageAdapter;
 
@@ -28,7 +26,7 @@ public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie
     }
 
     @Override
-    protected ArrayList<Movie> doInBackground(String... params) {
+    protected ArrayList<MovieClass> doInBackground(String... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -92,7 +90,7 @@ public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie
         String movieReleaseDate;
         double movieVoteAverage;
         String moviePosterLink;
-        ArrayList<Movie> movieList = new ArrayList<Movie>();
+        ArrayList<MovieClass> movieList = new ArrayList<MovieClass>();
         try {
             JSONObject jsonRoot = new JSONObject(movieJsonString);
             JSONArray resultsArray = jsonRoot.getJSONArray("results");
@@ -140,10 +138,10 @@ public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie
                 stringBuilder.append(posterPath);
 
                 moviePosterLink = stringBuilder.toString();
-                Log.e("stringBuilderLink:", moviePosterLink);
+                //Log.e("stringBuilderLink:", moviePosterLink);
 
                 // 5) Save values to the ArrayList.
-                Movie movie = new Movie(movieId, movieTitle, movieOriginalTitle, movieOverview,
+                MovieClass movie = new MovieClass(movieId, movieTitle, movieOriginalTitle, movieOverview,
                         movieReleaseDate, movieVoteAverage, moviePosterLink);
                 movieList.add(movie);
             }
@@ -155,11 +153,11 @@ public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Movie> resultArray) {
+    protected void onPostExecute(ArrayList<MovieClass> resultArray) {
 
         if (resultArray != null) {
             imageAdapter.clear();
-            for (Movie movieItem : resultArray)
+            for (MovieClass movieItem : resultArray)
                 imageAdapter.add(movieItem);
         }
 

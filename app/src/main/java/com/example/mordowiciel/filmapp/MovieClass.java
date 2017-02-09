@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by Szymon on 11.01.2017.
  */
 
-public class Movie {
+public class MovieClass {
 
     private String id;
     private String title;
@@ -16,8 +16,8 @@ public class Movie {
     private double voteAverage;
     private String posterLink;
 
-    public Movie(String id, String title, String originalTitle, String overview, String releaseDate,
-                 double voteAverage, String posterLink) {
+    public MovieClass(String id, String title, String originalTitle, String overview, String releaseDate,
+                      double voteAverage, String posterLink) {
         this.id = id;
         this.title = title;
         this.originalTitle = originalTitle;
