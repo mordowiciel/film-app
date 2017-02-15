@@ -1,7 +1,9 @@
 package com.example.mordowiciel.filmapp;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +39,16 @@ public class MovieDetailsFragment extends Fragment {
                 .into(imageView);
 
         TextView titleView = (TextView) rootView.findViewById(R.id.movie_details_title_textview);
-        titleView.setText(movieOriginalTitle);
+        titleView.setText( Html.fromHtml("<b>" + titleView.getText() + "</b> <br>"
+                + movieOriginalTitle));
 
         TextView dateView = (TextView) rootView.findViewById(R.id.movie_details_date_textview);
-        dateView.setText(movieDate);
+        dateView.setText(Html.fromHtml("<b>" + dateView.getText() + "</b> <br>"
+                + movieDate));
 
         TextView voteView = (TextView) rootView.findViewById(R.id.movie_details_vote_textview);
-        voteView.setText(Double.toString(movieVote));
+        voteView.setText(Html.fromHtml("<b>" + voteView.getText() + "</b> <br>"
+                + Double.toString(movieVote) + "/10"));
 
         TextView overviewView = (TextView) rootView.findViewById(R.id.movie_details_overview_textview);
         overviewView.setText(movieOverview);
