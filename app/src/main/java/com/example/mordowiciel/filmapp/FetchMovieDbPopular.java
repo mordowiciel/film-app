@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<MovieClass>> {
+public class FetchMovieDbPopular extends AsyncTask<FetchMoviePassedParam, Void, ArrayList<MovieClass>> {
 
     ImageAdapter imageAdapter;
 
@@ -26,7 +26,7 @@ public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie
     }
 
     @Override
-    protected ArrayList<MovieClass> doInBackground(String... params) {
+    protected ArrayList<MovieClass> doInBackground(FetchMoviePassedParam... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -41,15 +41,15 @@ public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie
             final String SORTING_PARAM = "sort_by";
             final String ADULT_PARAM = "include_adult";
             final String INCLUDE_VIDEO_PARAM = "include_video";
-            final String PAGE_PARAM = "1";
+            final String PAGE_PARAM = "page";
 
             Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon().
                     appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY).
                     appendQueryParameter(LANGUAGE_PARAM, "en-US").
-                    appendQueryParameter(SORTING_PARAM, params[0]).
+                    appendQueryParameter(SORTING_PARAM, params[0].getSorting()).
                     appendQueryParameter(ADULT_PARAM, "true").
                     appendQueryParameter(INCLUDE_VIDEO_PARAM, "false").
-                    appendQueryParameter(PAGE_PARAM, "1").
+                    appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getPageNumber())).
                     build();
 
             URL url = new URL(builtUri.toString());
@@ -154,12 +154,7 @@ public class FetchMovieDbPopular extends AsyncTask<String, Void, ArrayList<Movie
 
     @Override
     protected void onPostExecute(ArrayList<MovieClass> resultArray) {
-
-        if (resultArray != null) {
-            imageAdapter.clear();
-            for (MovieClass movieItem : resultArray)
-                imageAdapter.add(movieItem);
-        }
-
+        for (MovieClass movieItem : resultArray)
+            imageAdapter.add(movieItem);
     }
 }

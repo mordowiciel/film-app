@@ -37,7 +37,8 @@ public class MainFragment extends Fragment {
 
         //Create ASyncTask and execute it.
         fetchPopular = new FetchMovieDbPopular(imageAdapter);
-        fetchPopular.execute("popularity.desc");
+        FetchMoviePassedParam params = new FetchMoviePassedParam("popularity.desc", 1);
+        fetchPopular.execute(params);
 
         //Create a click listener for a particular movie.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,18 +68,34 @@ public class MainFragment extends Fragment {
             }
         });
 
+        gridView.setOnScrollListener(new InfiniteScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+
+                FetchMoviePassedParam params = new FetchMoviePassedParam("popularity.desc", page);
+                fetchPopular = new FetchMovieDbPopular(imageAdapter);
+                fetchPopular.execute(params);
+                return true;
+            }
+        });
         return rootView;
     }
 
+
     public void showPopularMovies() {
+        imageAdapter.clear();
         fetchPopular = new FetchMovieDbPopular(imageAdapter);
-        fetchPopular.execute("popularity.desc");
+        FetchMoviePassedParam params = new FetchMoviePassedParam("popularity.desc", 1);
+        fetchPopular.execute(params);
     }
 
     public void showMostRatedMovies() {
+        imageAdapter.clear();
         fetchPopular = new FetchMovieDbPopular(imageAdapter);
-        fetchPopular.execute("vote_average.desc");
+        FetchMoviePassedParam params = new FetchMoviePassedParam("vote_average.desc", 1);
+        fetchPopular.execute(params);
     }
+
 
 }
 
