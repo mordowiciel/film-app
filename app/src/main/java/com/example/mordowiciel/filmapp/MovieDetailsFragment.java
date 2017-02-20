@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 
 public class MovieDetailsFragment extends Fragment {
 
-
     public MovieDetailsFragment() {
         // Required empty public constructor
     }
@@ -23,10 +22,10 @@ public class MovieDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Get the arguments from  the MovieDetailsActivity.
         Bundle args = getArguments();
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
-        String movieTitle = args.getString("MOVIE_TITLE");
         String movieOriginalTitle = args.getString("MOVIE_ORIG_TITLE");
         String movieOverview = args.getString("MOVIE_OVERVIEW");
         String movieDate = args.getString("MOVIE_DATE");
@@ -52,7 +51,6 @@ public class MovieDetailsFragment extends Fragment {
 
         TextView overviewView = (TextView) rootView.findViewById(R.id.movie_details_overview_textview);
         overviewView.setText(movieOverview);
-
 
         return rootView;
     }

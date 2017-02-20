@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
 
-    private FetchMovieDbPopular fetchPopular;
+    private FetchMovies fetchPopular;
     private ImageAdapter imageAdapter;
 
     public MainFragment() {
@@ -36,8 +36,8 @@ public class MainFragment extends Fragment {
         gridView.setAdapter(imageAdapter);
 
         //Create ASyncTask and execute it.
-        fetchPopular = new FetchMovieDbPopular(imageAdapter);
-        FetchMoviePassedParam params = new FetchMoviePassedParam("popularity.desc", 1);
+        fetchPopular = new FetchMovies(imageAdapter);
+        FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
         fetchPopular.execute(params);
 
         //Create a click listener for a particular movie.
@@ -46,6 +46,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+                String movieId = imageAdapter.getItem(position).getMovieId();
                 String movieTitle = imageAdapter.getItem(position).getMovieTitle();
                 String movieOriginalTitle = imageAdapter.getItem(position).getMovieOriginalTitle();
                 String movieOverview = imageAdapter.getItem(position).getMovieOverview();
@@ -54,6 +55,7 @@ public class MainFragment extends Fragment {
                 String moviePosterLink = imageAdapter.getItem(position).getMoviePosterLink();
 
                 Bundle intentExtras = new Bundle();
+                intentExtras.putString("MOVIE_ID", movieId);
                 intentExtras.putString("MOVIE_TITLE", movieTitle);
                 intentExtras.putString("MOVIE_ORIG_TITLE", movieOriginalTitle);
                 intentExtras.putString("MOVIE_OVERVIEW", movieOverview);
@@ -72,8 +74,8 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
 
-                FetchMoviePassedParam params = new FetchMoviePassedParam("popularity.desc", page);
-                fetchPopular = new FetchMovieDbPopular(imageAdapter);
+                FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page);
+                fetchPopular = new FetchMovies(imageAdapter);
                 fetchPopular.execute(params);
                 return true;
             }
@@ -84,15 +86,15 @@ public class MainFragment extends Fragment {
 
     public void showPopularMovies() {
         imageAdapter.clear();
-        fetchPopular = new FetchMovieDbPopular(imageAdapter);
-        FetchMoviePassedParam params = new FetchMoviePassedParam("popularity.desc", 1);
+        fetchPopular = new FetchMovies(imageAdapter);
+        FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
         fetchPopular.execute(params);
     }
 
     public void showMostRatedMovies() {
         imageAdapter.clear();
-        fetchPopular = new FetchMovieDbPopular(imageAdapter);
-        FetchMoviePassedParam params = new FetchMoviePassedParam("vote_average.desc", 1);
+        fetchPopular = new FetchMovies(imageAdapter);
+        FetchMoviesPassedParam params = new FetchMoviesPassedParam("vote_average.desc", 1);
         fetchPopular.execute(params);
     }
 

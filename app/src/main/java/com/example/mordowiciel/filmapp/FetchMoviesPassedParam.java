@@ -1,15 +1,11 @@
 package com.example.mordowiciel.filmapp;
 
-/**
- * Created by szyma on 19.02.2017.
- */
-
-public class FetchMoviePassedParam {
+public class FetchMoviesPassedParam {
 
     private String sortBy;
     private int pageNumber;
 
-    public FetchMoviePassedParam(String sortBy, int pageNumber) {
+    public FetchMoviesPassedParam(String sortBy, int pageNumber) {
         this.sortBy = sortBy;
         this.pageNumber = pageNumber;
     }
