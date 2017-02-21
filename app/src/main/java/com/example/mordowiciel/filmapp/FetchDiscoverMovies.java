@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class FetchMovies extends AsyncTask<FetchMoviesPassedParam, Void, ArrayList<MovieClass>> {
+public class FetchDiscoverMovies extends AsyncTask<FetchMoviesPassedParam, Void, ArrayList<MovieClass>> {
 
     ImageAdapter imageAdapter;
 
-    FetchMovies(ImageAdapter imageAdapter) {
+    FetchDiscoverMovies(ImageAdapter imageAdapter) {
         this.imageAdapter = imageAdapter;
     }
 
@@ -34,8 +34,10 @@ public class FetchMovies extends AsyncTask<FetchMoviesPassedParam, Void, ArrayLi
 
         try {
 
-            //1) Built URL to connect.
-            final String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/discover/movie?";
+            final String MOVIEDB_AUTHORITY = "api.themoviedb.org";
+            final String MOVIEDB_VERSION = "3";
+            final String DISCOVER_PATH = "discover";
+            final String SHOW_TYPE = "movie";
             final String API_KEY_PARAM = "api_key";
             final String LANGUAGE_PARAM = "language";
             final String SORTING_PARAM = "sort_by";
@@ -43,16 +45,20 @@ public class FetchMovies extends AsyncTask<FetchMoviesPassedParam, Void, ArrayLi
             final String INCLUDE_VIDEO_PARAM = "include_video";
             final String PAGE_PARAM = "page";
 
-            Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon().
-                    appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY).
-                    appendQueryParameter(LANGUAGE_PARAM, "en-US").
-                    appendQueryParameter(SORTING_PARAM, params[0].getSorting()).
-                    appendQueryParameter(ADULT_PARAM, "true").
-                    appendQueryParameter(INCLUDE_VIDEO_PARAM, "false").
-                    appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getPageNumber())).
-                    build();
+            Uri.Builder builtUri = new Uri.Builder();
+            builtUri.scheme("https")
+                    .authority(MOVIEDB_AUTHORITY)
+                    .appendPath(MOVIEDB_VERSION)
+                    .appendPath(DISCOVER_PATH)
+                    .appendPath(SHOW_TYPE)
+                    .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                    .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                    .appendQueryParameter(SORTING_PARAM, params[0].getSorting())
+                    .appendQueryParameter(ADULT_PARAM, "true")
+                    .appendQueryParameter(INCLUDE_VIDEO_PARAM, "false")
+                    .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getPageNumber()));
 
-            URL url = new URL(builtUri.toString());
+            URL url = new URL(builtUri.build().toString());
 
             //2) Connect to the URL.
             urlConnection = (HttpsURLConnection) url.openConnection();
@@ -127,7 +133,7 @@ public class FetchMovies extends AsyncTask<FetchMoviesPassedParam, Void, ArrayLi
                 String moviePosterLink = builtUri.build().toString();
                 Log.e("Build URL: ", moviePosterLink);
 
-                // 5) Save values to the ArrayList.
+                // 8) Save values to the ArrayList.
                 MovieClass movie = new MovieClass(movieId, movieTitle, movieOriginalTitle, movieOverview,
                         movieReleaseDate, movieVoteAverage, moviePosterLink);
                 movieList.add(movie);

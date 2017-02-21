@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
 
-    private FetchMovies fetchPopular;
+    private FetchDiscoverMovies fetchPopular;
     private ImageAdapter imageAdapter;
 
     public MainFragment() {
@@ -36,7 +36,7 @@ public class MainFragment extends Fragment {
         gridView.setAdapter(imageAdapter);
 
         //Create ASyncTask and execute it.
-        fetchPopular = new FetchMovies(imageAdapter);
+        fetchPopular = new FetchDiscoverMovies(imageAdapter);
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
         fetchPopular.execute(params);
 
@@ -46,13 +46,13 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                String movieId = imageAdapter.getItem(position).getMovieId();
-                String movieTitle = imageAdapter.getItem(position).getMovieTitle();
-                String movieOriginalTitle = imageAdapter.getItem(position).getMovieOriginalTitle();
-                String movieOverview = imageAdapter.getItem(position).getMovieOverview();
-                String movieReleaseDate = imageAdapter.getItem(position).getMovieReleaseDate();
-                double movieVoteAverage = imageAdapter.getItem(position).getMovieVoteAverage();
-                String moviePosterLink = imageAdapter.getItem(position).getMoviePosterLink();
+                String movieId = imageAdapter.getItem(position).getShowId();
+                String movieTitle = imageAdapter.getItem(position).getShowTitle();
+                String movieOriginalTitle = imageAdapter.getItem(position).getShowTitle();
+                String movieOverview = imageAdapter.getItem(position).getShowOverview();
+                String movieReleaseDate = imageAdapter.getItem(position).getShowReleaseDate();
+                double movieVoteAverage = imageAdapter.getItem(position).getShowVoteAverage();
+                String moviePosterLink = imageAdapter.getItem(position).getShowPosterLink();
 
                 Bundle intentExtras = new Bundle();
                 intentExtras.putString("MOVIE_ID", movieId);
@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
             public boolean onLoadMore(int page, int totalItemsCount) {
 
                 FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page);
-                fetchPopular = new FetchMovies(imageAdapter);
+                fetchPopular = new FetchDiscoverMovies(imageAdapter);
                 fetchPopular.execute(params);
                 return true;
             }
@@ -86,14 +86,14 @@ public class MainFragment extends Fragment {
 
     public void showPopularMovies() {
         imageAdapter.clear();
-        fetchPopular = new FetchMovies(imageAdapter);
+        fetchPopular = new FetchDiscoverMovies(imageAdapter);
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
         fetchPopular.execute(params);
     }
 
     public void showMostRatedMovies() {
         imageAdapter.clear();
-        fetchPopular = new FetchMovies(imageAdapter);
+        fetchPopular = new FetchDiscoverMovies(imageAdapter);
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("vote_average.desc", 1);
         fetchPopular.execute(params);
     }
