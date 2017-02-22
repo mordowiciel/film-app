@@ -1,14 +1,12 @@
 package com.example.mordowiciel.filmapp;
 
-import java.util.Date;
-
 /**
  * Created by Szymon on 11.01.2017.
  */
 
-public class MovieClass extends ShowClass {
+public class MovieClass extends ShowDetails {
 
-
+    
     public MovieClass(String id, String title, String originalTitle, String overview, String releaseDate,
                       double voteAverage, String posterLink) {
 

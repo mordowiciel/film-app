@@ -26,12 +26,12 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ArrayList<MovieClass> movieArray = new ArrayList<>();
+        ArrayList<ShowThumbnail> showThumbnails = new ArrayList<>();
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.fragment_main_gridview);
-        imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, movieArray);
+        imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, showThumbnails);
 
         gridView.setAdapter(imageAdapter);
 
@@ -46,22 +46,12 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                String movieId = imageAdapter.getItem(position).getShowId();
-                String movieTitle = imageAdapter.getItem(position).getShowTitle();
-                String movieOriginalTitle = imageAdapter.getItem(position).getShowTitle();
-                String movieOverview = imageAdapter.getItem(position).getShowOverview();
-                String movieReleaseDate = imageAdapter.getItem(position).getShowReleaseDate();
-                double movieVoteAverage = imageAdapter.getItem(position).getShowVoteAverage();
-                String moviePosterLink = imageAdapter.getItem(position).getShowPosterLink();
+                String showId = imageAdapter.getItem(position).getShowId();
+                String showTitle = imageAdapter.getItem(position).getShowTitle();
 
                 Bundle intentExtras = new Bundle();
-                intentExtras.putString("MOVIE_ID", movieId);
-                intentExtras.putString("MOVIE_TITLE", movieTitle);
-                intentExtras.putString("MOVIE_ORIG_TITLE", movieOriginalTitle);
-                intentExtras.putString("MOVIE_OVERVIEW", movieOverview);
-                intentExtras.putString("MOVIE_DATE", movieReleaseDate);
-                intentExtras.putDouble("MOVIE_VOTE", movieVoteAverage);
-                intentExtras.putString("MOVIE_POSTER", moviePosterLink);
+                intentExtras.putString("SHOW_ID", showId);
+                intentExtras.putString("SHOW_TITLE", showTitle);
 
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtras(intentExtras);

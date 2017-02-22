@@ -11,7 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity
+        implements FetchMovieDetailsById.FragmentCallback {
 
     private Bundle receivedBundle;
 
@@ -34,7 +35,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String movieTitle = receivedBundle.getString("MOVIE_TITLE");
+        String movieTitle = receivedBundle.getString("SHOW_TITLE");
         setTitle(movieTitle);
 
     }
@@ -64,10 +65,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onAsyncExecutedPopulateView(MovieClass movieDetails) {
+        MovieDetailsFragment movieDetailsFragment =
+                (MovieDetailsFragment) getSupportFragmentManager().
+                        findFragmentById(R.id.container_movie_details);
+
+        movieDetailsFragment.populateView(movieDetails);
+    }
+
     public Intent createShareIntent() {
 
         // 1) Get the specific movie ID.
-        String movieId = receivedBundle.getString("MOVIE_ID");
+        String movieId = receivedBundle.getString("SHOW_ID");
 
         // 2) Build the URL with the current movie ID.
         Uri.Builder builder = new Uri.Builder();

@@ -17,12 +17,4 @@ public class FetchMoviesPassedParam {
     public int getPageNumber(){
         return pageNumber;
     }
-
-    public void setSorting(String sortBy){
-        this.sortBy = sortBy;
-    }
-
-    public void setPageNumber(int pageNumber){
-        this.pageNumber = pageNumber;
-    }
 }

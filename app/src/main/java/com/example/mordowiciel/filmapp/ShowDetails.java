@@ -4,39 +4,27 @@ package com.example.mordowiciel.filmapp;
  * Created by mordowiciel on 21.02.17.
  */
 
-public abstract class ShowClass {
+public abstract class ShowDetails extends ShowThumbnail {
 
-    protected String id;
-    protected String title;
     protected String originalTitle;
     protected String overview;
     protected String releaseDate;
     protected double voteAverage;
-    protected String posterLink;
 
-    public ShowClass(){
+    public ShowDetails(){
 
     }
 
-    public ShowClass(String id, String title, String originalTitle, String overview, String releaseDate,
-                      double voteAverage, String posterLink) {
+    public ShowDetails(String id, String title, String originalTitle, String overview, String releaseDate,
+                       double voteAverage, String posterLink) {
 
-        this.id = id;
-        this.title = title;
+        super(id, title, posterLink);
         this.originalTitle = originalTitle;
         this.overview = overview;
         this.releaseDate = releaseDate;
         this.voteAverage = voteAverage;
-        this.posterLink = posterLink;
     }
 
-    public String getShowId() {
-        return id;
-    }
-
-    public String getShowTitle() {
-        return title;
-    }
 
     public String getShowOriginalTitle() {
         return originalTitle;
@@ -54,8 +42,5 @@ public abstract class ShowClass {
         return voteAverage;
     }
 
-    public String getShowPosterLink() {
-        return posterLink;
-    }
 
 }

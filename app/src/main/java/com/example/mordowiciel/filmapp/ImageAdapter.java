@@ -12,11 +12,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ImageAdapter extends ArrayAdapter<MovieClass> {
+public class ImageAdapter extends ArrayAdapter<ShowThumbnail> {
 
 
-    public ImageAdapter (Context ctx, int textViewResourceId, ArrayList <MovieClass> movies){
-        super(ctx, textViewResourceId, movies);
+    public ImageAdapter (Context ctx, int textViewResourceId, ArrayList <ShowThumbnail> showThumbnails){
+        super(ctx, textViewResourceId, showThumbnails);
     }
 
     public View getView (int position, View convertView, ViewGroup parent) {
@@ -28,12 +28,12 @@ public class ImageAdapter extends ArrayAdapter<MovieClass> {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.image_item_imageview);
         TextView textView = (TextView) convertView.findViewById(R.id.image_item_textview);
 
-        MovieClass item = getItem(position);
+        ShowThumbnail item = getItem(position);
 
         if (item != null) {
-            textView.setText(item.getMovieTitle());
+            textView.setText(item.getShowTitle());
             Picasso.with(getContext())
-                    .load(item.getMoviePosterLink())
+                    .load(item.getShowPosterLink())
                     .fit()
                     .into(imageView);
         }
