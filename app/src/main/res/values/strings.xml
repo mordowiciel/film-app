@@ -8,4 +8,9 @@
     <string name="action_share">Share</string>
     <string name="title_activity_main">Movies</string>
 
+    <string-array name="navigation_drawer_content">
+        <item>Movies</item>
+        <item>TV</item>
+    </string-array>
+
 </resources>

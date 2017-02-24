@@ -88,6 +88,21 @@ public class MainFragment extends Fragment {
         fetchPopular.execute(params);
     }
 
+    public void showPopularTv() {
+        imageAdapter.clear();
+        FetchDiscoverTv fetchPopularTv = new FetchDiscoverTv(imageAdapter);
+        //TEMPORARY
+        FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
+        fetchPopularTv.execute(params);
+    }
+
+    public void showMostRatedTv(){
+        imageAdapter.clear();
+        FetchDiscoverTv fetchMostRatedTv = new FetchDiscoverTv(imageAdapter);
+        FetchMoviesPassedParam params = new FetchMoviesPassedParam("vote_average.desc", 1);
+        fetchMostRatedTv.execute(params);
+    }
+
 
 }
 

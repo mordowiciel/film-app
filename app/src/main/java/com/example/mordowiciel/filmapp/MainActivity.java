@@ -2,13 +2,22 @@ package com.example.mordowiciel.filmapp;
 
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
         implements SortbyFragment.NoticeSortingDialogFragment {
+
+    private String[] navDrawerContent;
 
 
     @Override
@@ -23,9 +32,18 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
 
-        //Create a toolbar for activity.
+        // Create a toolbar for activity.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Set up the navigation drawer.
+        navDrawerContent = getResources().getStringArray(R.array.navigation_drawer_content);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ListView drawerList = (ListView) findViewById(R.id.left_drawer);
+
+        //Set the adapter for list view.
+        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item,
+                R.id.navigation_drawer_textview, navDrawerContent));
     }
 
     @Override
