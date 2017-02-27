@@ -17,7 +17,11 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity
         implements SortbyFragment.NoticeSortingDialogFragment {
 
-    private String[] navDrawerContent;
+    private String[] navDrawerTextContent;
+    private int[] navDrawerImageContent = {
+        R.drawable.ic_popular,
+        R.drawable.ic_rating
+    };
 
 
     @Override
@@ -37,13 +41,24 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Set up the navigation drawer.
-        navDrawerContent = getResources().getStringArray(R.array.navigation_drawer_content);
+        ArrayList<NavDrawerView>navDrawerViews = new ArrayList<>();
+        navDrawerTextContent = getResources().getStringArray(R.array.navigation_drawer_text_content);
+
+        for (int i = 0; i < navDrawerTextContent.length; i++)
+            navDrawerViews.add(new NavDrawerView(navDrawerTextContent[i], navDrawerImageContent[i]));
+
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ListView drawerList = (ListView) findViewById(R.id.left_drawer);
 
         //Set the adapter for list view.
-        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item,
-                R.id.navigation_drawer_textview, navDrawerContent));
+//        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item,
+//                R.id.navigation_drawer_textview, navDrawerContent));
+
+        NavDrawerAdapter adapter = new NavDrawerAdapter(this, R.layout.navigation_drawer_item,
+                navDrawerViews);
+        drawerList.setAdapter(adapter);
+
+
     }
 
     @Override
