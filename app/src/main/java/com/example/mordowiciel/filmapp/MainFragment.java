@@ -14,8 +14,11 @@ import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
 
-    private FetchDiscoverMovies fetchPopular;
+    private FetchDiscoverMovies fetchDiscoverMovies;
+    private FetchDiscoverTv fetchDiscoverTv;
     private ImageAdapter imageAdapter;
+    public boolean tvIsShown;
+    public boolean movieIsShown;
 
     public MainFragment() {
         // Required empty public constructor
@@ -36,9 +39,10 @@ public class MainFragment extends Fragment {
         gridView.setAdapter(imageAdapter);
 
         //Create ASyncTask and execute it.
-        fetchPopular = new FetchDiscoverMovies(imageAdapter);
+        movieIsShown = true;
+        fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
-        fetchPopular.execute(params);
+        fetchDiscoverMovies.execute(params);
 
         //Create a click listener for a particular movie.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,8 +69,14 @@ public class MainFragment extends Fragment {
             public boolean onLoadMore(int page, int totalItemsCount) {
 
                 FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page);
-                fetchPopular = new FetchDiscoverMovies(imageAdapter);
-                fetchPopular.execute(params);
+                if(movieIsShown){
+                    fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
+                    fetchDiscoverMovies.execute(params);
+                }
+                if(tvIsShown){
+                    fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
+                    fetchDiscoverTv.execute(params);
+                }
                 return true;
             }
         });
@@ -76,31 +86,32 @@ public class MainFragment extends Fragment {
 
     public void showPopularMovies() {
         imageAdapter.clear();
-        fetchPopular = new FetchDiscoverMovies(imageAdapter);
+        fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
-        fetchPopular.execute(params);
+        fetchDiscoverMovies.execute(params);
     }
 
     public void showMostRatedMovies() {
         imageAdapter.clear();
-        fetchPopular = new FetchDiscoverMovies(imageAdapter);
+        fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("vote_average.desc", 1);
-        fetchPopular.execute(params);
+        fetchDiscoverMovies.execute(params);
     }
 
     public void showPopularTv() {
         imageAdapter.clear();
-        FetchDiscoverTv fetchPopularTv = new FetchDiscoverTv(imageAdapter);
+        fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
         //TEMPORARY
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
-        fetchPopularTv.execute(params);
+        fetchDiscoverTv.execute(params);
     }
 
     public void showMostRatedTv(){
         imageAdapter.clear();
-        FetchDiscoverTv fetchMostRatedTv = new FetchDiscoverTv(imageAdapter);
+        fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
+        //TEMPORARY
         FetchMoviesPassedParam params = new FetchMoviesPassedParam("vote_average.desc", 1);
-        fetchMostRatedTv.execute(params);
+        fetchDiscoverTv.execute(params);
     }
 
 

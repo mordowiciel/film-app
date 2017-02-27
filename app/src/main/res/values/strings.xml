@@ -13,5 +13,8 @@
         <item>TV</item>
     </string-array>
 
+    <string name="drawer_closed">Drawer closed</string>
+    <string name="drawer_opened">Drawer opened</string>
+
 
 </resources>
