@@ -6,7 +6,7 @@ package com.example.mordowiciel.filmapp;
 
 public class MovieClass extends ShowDetails {
 
-    
+
     public MovieClass(String id, String title, String originalTitle, String overview, String releaseDate,
                       double voteAverage, String posterLink) {
 

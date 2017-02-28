@@ -1,49 +1,31 @@
 package com.example.mordowiciel.filmapp;
 
 import android.content.res.Configuration;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
-        implements SortbyFragment.NoticeSortingDialogFragment {
+        implements SortbyFragment.NoticeSortingDialogFragment,
+        NavigationView.OnNavigationItemSelectedListener {
 
-    private String[] navDrawerTextContent;
-    private int[] navDrawerImageContent = {
-            R.drawable.ic_popular,
-            R.drawable.ic_rating
-    };
 
     private ActionBarDrawerToggle drawerToggle;
-    private ListView drawerList;
     private DrawerLayout drawerLayout;
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            viewShowsThumbnails(position);
-        }
-    }
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_drawer);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -55,24 +37,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        // Set up the navigation drawer.
-        ArrayList<NavDrawerView> navDrawerViews = new ArrayList<>();
-        navDrawerTextContent = getResources().getStringArray(R.array.navigation_drawer_text_content);
-
-        for (int i = 0; i < navDrawerTextContent.length; i++)
-            navDrawerViews.add(new NavDrawerView(navDrawerTextContent[i], navDrawerImageContent[i]));
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ListView) findViewById(R.id.left_drawer);
-
-        // Set the adapter for list view.
-        NavDrawerAdapter adapter = new NavDrawerAdapter(this, R.layout.navigation_drawer_item,
-                navDrawerViews);
-        drawerList.setAdapter(adapter);
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
-
         // Set up drawer functions.
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.left_drawer);
+        navigationView.setNavigationItemSelectedListener(this);
+
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
                 R.string.drawer_opened, R.string.drawer_closed) {
 
@@ -86,12 +55,14 @@ public class MainActivity extends AppCompatActivity
                 invalidateOptionsMenu();
             }
         };
-        drawerToggle.setDrawerIndicatorEnabled(true);
-        drawerLayout.addDrawerListener(drawerToggle);
 
         // Create home button.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.addDrawerListener(drawerToggle);
+
 
     }
 
@@ -115,10 +86,39 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.container_main);
+
+        switch (item.getItemId()) {
+
+            case R.id.nav_movie:
+                mainFragment.movieIsShown = true;
+                mainFragment.tvIsShown = false;
+                mainFragment.showPopularMovies();
+                getSupportActionBar().setTitle("Movies");
+                break;
+
+            case R.id.nav_tv:
+                mainFragment.movieIsShown = false;
+                mainFragment.tvIsShown = true;
+                mainFragment.showPopularTv();
+                getSupportActionBar().setTitle("TV");
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        drawerLayout.closeDrawer(navigationView);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // Click on navigation drawer icon.
-        int id;
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -137,7 +137,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /// FRAGMENT OPTIONS ///
+    /*
+
+        /////// *** DIALOG OPTIONS *** ///////
+
+    */
 
     public void showSortingDialog() {
 
@@ -174,31 +178,6 @@ public class MainActivity extends AppCompatActivity
         if (mainFragment.tvIsShown) {
             mainFragment.showMostRatedTv();
         }
-    }
-
-    public void viewShowsThumbnails(int position) {
-
-        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.container_main);
-
-        switch (position) {
-            case 0:
-                mainFragment.movieIsShown = true;
-                mainFragment.tvIsShown = false;
-                mainFragment.showPopularMovies();
-                getSupportActionBar().setTitle("Movies");
-                break;
-            case 1:
-                mainFragment.movieIsShown = false;
-                mainFragment.tvIsShown = true;
-                mainFragment.showPopularTv();
-                getSupportActionBar().setTitle("TV");
-                break;
-            default:
-        }
-
-        drawerList.setItemChecked(position, true);
-        drawerLayout.closeDrawer(drawerList);
     }
 
 }
