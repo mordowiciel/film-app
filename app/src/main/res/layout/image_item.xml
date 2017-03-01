@@ -35,12 +35,6 @@
             android:maxLines="2"
             android:text="Beniz"
             android:layout_alignParentBottom="true" />
-            <!--
-            android:layout_alignEnd="@+id/image_item_imageview"
-            android:layout_alignLeft="@+id/image_item_imageview"
-            android:layout_alignRight="@+id/image_item_imageview"
-            android:layout_alignStart="@+id/image_item_imageview"
-            android:layout_below="@+id/image_item_imageview" -->
 
     </RelativeLayout>
 

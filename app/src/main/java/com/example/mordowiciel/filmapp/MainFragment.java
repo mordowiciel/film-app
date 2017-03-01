@@ -57,6 +57,12 @@ public class MainFragment extends Fragment {
                 intentExtras.putString("SHOW_ID", showId);
                 intentExtras.putString("SHOW_TITLE", showTitle);
 
+                if(movieIsShown)
+                    intentExtras.putString("SHOW_TYPE", "movie");
+
+                if(tvIsShown)
+                    intentExtras.putString("SHOW_TYPE", "tv");
+
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtras(intentExtras);
 

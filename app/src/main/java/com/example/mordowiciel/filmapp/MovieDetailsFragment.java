@@ -27,9 +27,19 @@ public class MovieDetailsFragment extends Fragment {
         Bundle args = getArguments();
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
-        FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
-        fetchDetails.execute(args.getString("SHOW_ID"));
+        if(args.getString("SHOW_TYPE")=="movie"){
+            FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
+            fetchDetails.execute(args.getString("SHOW_ID"));
+        }
 
+        if (args.getString("SHOW_TYPE")=="tv"){
+            //FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
+            //fetchDetails.execute(args.getString("SHOW_ID"));
+
+            //FetchTvDetailsById fetchDetails = new FetchTvDetailsById(getContext());
+            //fetchDetails.execute(args.getString("SHOW_ID"));
+        }
+        
         return rootView;
     }
 
