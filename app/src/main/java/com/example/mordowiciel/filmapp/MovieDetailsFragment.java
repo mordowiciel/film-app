@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -27,12 +29,14 @@ public class MovieDetailsFragment extends Fragment {
         Bundle args = getArguments();
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
-        if(args.getString("SHOW_TYPE")=="movie"){
+        String showType = args.getString("SHOW_TYPE");
+
+        if(showType.equals("movie")){
             FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
             fetchDetails.execute(args.getString("SHOW_ID"));
         }
 
-        if (args.getString("SHOW_TYPE")=="tv"){
+        if (showType.equals("tv")){
             //FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
             //fetchDetails.execute(args.getString("SHOW_ID"));
 
@@ -55,19 +59,33 @@ public class MovieDetailsFragment extends Fragment {
                 .into(imageView);
 
         TextView titleView = (TextView) mActivity.findViewById(R.id.movie_details_title_textview);
-        titleView.setText( Html.fromHtml("<b>" + titleView.getText() + "</b> <br>"
+        titleView.setText( Html.fromHtml("<b>" + "Original title: " + "</b> <br>"
                 + movieDetails.getShowOriginalTitle()));
 
         TextView dateView = (TextView) mActivity.findViewById(R.id.movie_details_date_textview);
-        dateView.setText(Html.fromHtml("<b>" + dateView.getText() + "</b> <br>"
+        dateView.setText(Html.fromHtml("<b>" + "Release date: " + "</b> <br>"
                 + movieDetails.getShowReleaseDate()));
 
         TextView voteView = (TextView) mActivity.findViewById(R.id.movie_details_vote_textview);
-        voteView.setText(Html.fromHtml("<b>" + voteView.getText() + "</b> <br>"
+        voteView.setText(Html.fromHtml("<b>" + "Vote average: " + "</b> <br>"
                 + Double.toString(movieDetails.getShowVoteAverage()) + "/10"));
 
         TextView overviewView = (TextView) mActivity.findViewById(R.id.movie_details_overview_textview);
         overviewView.setText(movieDetails.getShowOverview());
+
+        // Make the cards visible after loading the content.
+        CardView posterCard = (CardView)mActivity.findViewById(R.id.movie_details_poster_card);
+        posterCard.setVisibility(View.VISIBLE);
+
+        CardView infoCard = (CardView)mActivity.findViewById(R.id.movie_details_info_card);
+        infoCard.setVisibility(View.VISIBLE);
+
+        CardView detailsCard = (CardView)mActivity.findViewById(R.id.movie_details_overview_card);
+        detailsCard.setVisibility(View.VISIBLE);
+
+        // Dismiss  the loading panel.
+        RelativeLayout loadingPanel = (RelativeLayout)mActivity.findViewById(R.id.movie_details_loading_panel);
+        loadingPanel.setVisibility(View.GONE);
     }
 
 }

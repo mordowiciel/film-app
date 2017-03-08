@@ -19,12 +19,27 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.example.mordowiciel.filmapp.MovieDetailsActivity">
 
+        <RelativeLayout
+            android:id="@+id/movie_details_loading_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
+
         <!-- Poster of a movie -->
 
         <android.support.v7.widget.CardView
             android:id="@+id/movie_details_poster_card"
             android:layout_width="150dp"
             android:layout_height="200dp"
+            android:visibility="invisible"
             card_view:cardCornerRadius="4dp">
 
             <ImageView
@@ -53,6 +68,7 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/movie_details_info_card"
                 android:layout_width="match_parent"
+                android:visibility="invisible"
                 android:layout_height="wrap_content">
 
                 <ScrollView
@@ -69,22 +85,19 @@
                             android:id="@+id/movie_details_title_textview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="Original title:" />
+                            android:padding="10dp" />
 
                         <TextView
                             android:id="@+id/movie_details_vote_textview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="Vote average:" />
+                            android:padding="10dp" />
 
                         <TextView
                             android:id="@+id/movie_details_date_textview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="Release date:" />
+                            android:padding="10dp" />
 
                     </LinearLayout>
                 </ScrollView>
@@ -98,6 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_details_poster_card"
+            android:visibility="invisible"
             android:layout_marginTop="20dp">
 
             <TextView
