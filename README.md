@@ -7,9 +7,6 @@ TODO/Refactor list:
 
 - Using ASyncTask for fetching data in background is not really recommended. Use services?
 - Fetching data from server is done in really "vanilla" way. Switch to Retrofit library?
-- Add some settings to the Settings activity. Switch to night mode?
-- Add dynamic search button to the Main Activity to allow user searching for any movie.
-
-- Improve main grid view - use card view?
-- Improve MovieDetails activity - add viewing YouTube trailer, parsing date string, exceptional poster "No Poster Available" (when poster path returned by db is null) and "share" button?
-- Add navigation drawer to the app - then enable ability to fetch movie by cinema/TV show, genre etc?
+- Add some settings to the Settings activity.
+- Add dynamic search button to the Main Activity to allow user searching for any movie/tv show.
+- Improve MovieDetails activity - add viewing YouTube trailer, parsing date string, exceptional poster "No Poster Available" (when poster path returned by db is null)?
