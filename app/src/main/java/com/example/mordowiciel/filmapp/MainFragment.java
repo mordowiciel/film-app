@@ -63,7 +63,7 @@ public class MainFragment extends Fragment {
                 if(tvIsShown)
                     intentExtras.putString("SHOW_TYPE", "tv");
 
-                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), ShowDetailsActivity.class);
                 intent.putExtras(intentExtras);
 
                 startActivity(intent);

@@ -25,25 +25,15 @@ public class MovieDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Get the arguments from  the MovieDetailsActivity.
+        // Get the arguments from  the ShowDetailsActivity.
         Bundle args = getArguments();
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
         String showType = args.getString("SHOW_TYPE");
 
-        if(showType.equals("movie")){
-            FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
-            fetchDetails.execute(args.getString("SHOW_ID"));
-        }
+        FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
+        fetchDetails.execute(args.getString("SHOW_ID"));
 
-        if (showType.equals("tv")){
-            //FetchMovieDetailsById fetchDetails = new FetchMovieDetailsById(getContext());
-            //fetchDetails.execute(args.getString("SHOW_ID"));
-
-            //FetchTvDetailsById fetchDetails = new FetchTvDetailsById(getContext());
-            //fetchDetails.execute(args.getString("SHOW_ID"));
-        }
-        
         return rootView;
     }
 

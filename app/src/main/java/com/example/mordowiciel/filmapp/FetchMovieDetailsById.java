@@ -98,6 +98,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
         MovieClass movieDetails = null;
 
         try {
+
             JSONObject jsonRoot = new JSONObject(movieDetailsJsonString);
 
             String id = jsonRoot.getString("id");

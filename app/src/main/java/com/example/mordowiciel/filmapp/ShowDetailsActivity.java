@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MovieDetailsActivity extends AppCompatActivity
+public class ShowDetailsActivity extends AppCompatActivity
         implements FetchMovieDetailsById.FragmentCallback {
 
     private Bundle receivedBundle;
@@ -23,13 +23,25 @@ public class MovieDetailsActivity extends AppCompatActivity
         setContentView(R.layout.activity_movie_details);
         Intent receivedIntent = getIntent();
         receivedBundle = receivedIntent.getExtras();
+        String showType = receivedBundle.getString("SHOW_TYPE");
 
-        if (savedInstanceState == null){
-            MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
-            movieDetailsFragment.setArguments(receivedBundle);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_movie_details, movieDetailsFragment)
-                    .commit();
+        if (savedInstanceState == null) {
+
+            if (showType.equals("movie")) {
+                MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
+                movieDetailsFragment.setArguments(receivedBundle);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container_movie_details, movieDetailsFragment)
+                        .commit();
+            }
+
+            if (showType.equals("tv")) {
+//                TvDetailsFragment tvDetailsFragment = new TvDetailsFragment();
+//                tvDetailsFragment.setArguments(receivedBundle);
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.container_movie_details, tvDetailsFragment)
+//                        .commit();
+            }
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,7 +53,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_movie_details, menu);
 
@@ -67,11 +79,25 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     @Override
     public void onAsyncExecutedPopulateView(MovieClass movieDetails) {
-        MovieDetailsFragment movieDetailsFragment =
-                (MovieDetailsFragment) getSupportFragmentManager().
-                        findFragmentById(R.id.container_movie_details);
 
-        movieDetailsFragment.populateView(movieDetails);
+        String showType = receivedBundle.getString("SHOW_TYPE");
+
+        if (showType.equals("movie")) {
+            MovieDetailsFragment movieDetailsFragment =
+                    (MovieDetailsFragment) getSupportFragmentManager().
+                            findFragmentById(R.id.container_movie_details);
+            movieDetailsFragment.populateView(movieDetails);
+        }
+
+        if (showType.equals("tv")){
+//            TvDetailsFragment tvDetailsFragment =
+//                    (TvDetailsFragment) getSupportFragmentManager().
+//                            findFragmentById(R.id.container_movie_details);
+//            tvDetailsFragment.populateView(movieDetails);
+        }
+
+
+
     }
 
     public Intent createShareIntent() {
