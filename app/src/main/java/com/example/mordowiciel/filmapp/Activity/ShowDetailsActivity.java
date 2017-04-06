@@ -1,4 +1,4 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +11,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.mordowiciel.filmapp.Class.TvClass;
+import com.example.mordowiciel.filmapp.Fetch.FetchMovieDetailsById;
+import com.example.mordowiciel.filmapp.Class.MovieClass;
+import com.example.mordowiciel.filmapp.Fetch.FetchTvDetailsById;
+import com.example.mordowiciel.filmapp.Fragment.MovieDetailsFragment;
+import com.example.mordowiciel.filmapp.Fragment.TvDetailsFragment;
+import com.example.mordowiciel.filmapp.R;
+
 public class ShowDetailsActivity extends AppCompatActivity
-        implements FetchMovieDetailsById.FragmentCallback {
+        implements FetchMovieDetailsById.MovieDetailsCallback,
+        FetchTvDetailsById.TvDetailsCallback{
 
     private Bundle receivedBundle;
 
@@ -36,11 +45,11 @@ public class ShowDetailsActivity extends AppCompatActivity
             }
 
             if (showType.equals("tv")) {
-//                TvDetailsFragment tvDetailsFragment = new TvDetailsFragment();
-//                tvDetailsFragment.setArguments(receivedBundle);
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.container_movie_details, tvDetailsFragment)
-//                        .commit();
+                TvDetailsFragment tvDetailsFragment = new TvDetailsFragment();
+                tvDetailsFragment.setArguments(receivedBundle);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container_movie_details, tvDetailsFragment)
+                        .commit();
             }
         }
 
@@ -80,25 +89,22 @@ public class ShowDetailsActivity extends AppCompatActivity
     @Override
     public void onAsyncExecutedPopulateView(MovieClass movieDetails) {
 
-        String showType = receivedBundle.getString("SHOW_TYPE");
-
-        if (showType.equals("movie")) {
-            MovieDetailsFragment movieDetailsFragment =
-                    (MovieDetailsFragment) getSupportFragmentManager().
-                            findFragmentById(R.id.container_movie_details);
-            movieDetailsFragment.populateView(movieDetails);
-        }
-
-        if (showType.equals("tv")){
-//            TvDetailsFragment tvDetailsFragment =
-//                    (TvDetailsFragment) getSupportFragmentManager().
-//                            findFragmentById(R.id.container_movie_details);
-//            tvDetailsFragment.populateView(movieDetails);
-        }
-
-
-
+        MovieDetailsFragment movieDetailsFragment =
+                (MovieDetailsFragment) getSupportFragmentManager().
+                        findFragmentById(R.id.container_movie_details);
+        movieDetailsFragment.populateView(movieDetails);
     }
+
+    @Override
+    public void onAsyncExecutedPopulateView(TvClass tvDetails) {
+
+        TvDetailsFragment tvDetailsFragment =
+                (TvDetailsFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.container_movie_details);
+        tvDetailsFragment.populateView(tvDetails);
+    }
+
+
 
     public Intent createShareIntent() {
 

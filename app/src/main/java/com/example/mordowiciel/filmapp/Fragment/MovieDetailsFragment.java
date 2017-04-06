@@ -1,7 +1,6 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Fragment;
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -13,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.mordowiciel.filmapp.Fetch.FetchMovieDetailsById;
+import com.example.mordowiciel.filmapp.Class.MovieClass;
+import com.example.mordowiciel.filmapp.R;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailsFragment extends Fragment {

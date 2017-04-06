@@ -1,4 +1,4 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Activity;
 
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
@@ -11,6 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.example.mordowiciel.filmapp.Fragment.MainFragment;
+import com.example.mordowiciel.filmapp.R;
+import com.example.mordowiciel.filmapp.Fragment.SortbyFragment;
 
 public class MainActivity extends AppCompatActivity
         implements SortbyFragment.NoticeSortingDialogFragment,

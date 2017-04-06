@@ -1,4 +1,4 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Fetch;
 
 public class FetchMoviesPassedParam {
 

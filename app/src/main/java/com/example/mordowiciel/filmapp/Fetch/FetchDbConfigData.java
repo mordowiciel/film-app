@@ -1,10 +1,13 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Fetch;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.mordowiciel.filmapp.BuildConfig;
+import com.example.mordowiciel.filmapp.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

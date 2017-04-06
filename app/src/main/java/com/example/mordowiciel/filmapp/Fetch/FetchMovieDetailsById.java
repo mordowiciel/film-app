@@ -1,32 +1,34 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Fetch;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.mordowiciel.filmapp.BuildConfig;
+import com.example.mordowiciel.filmapp.Class.MovieClass;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 
 public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> {
 
-    private FragmentCallback mFragmentCallback;
+    private MovieDetailsCallback mMovieDetailsCallback;
 
-    public interface FragmentCallback {
+    public interface MovieDetailsCallback {
         void onAsyncExecutedPopulateView(MovieClass movieDetails);
     }
 
 
     public FetchMovieDetailsById(Context ctx) {
-        mFragmentCallback = (FragmentCallback) ctx;
+        mMovieDetailsCallback = (MovieDetailsCallback) ctx;
     }
 
     @Override
@@ -141,7 +143,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
     @Override
     protected void onPostExecute (MovieClass movieDetails) {
 
-        mFragmentCallback.onAsyncExecutedPopulateView(movieDetails);
+        mMovieDetailsCallback.onAsyncExecutedPopulateView(movieDetails);
     }
 
 }

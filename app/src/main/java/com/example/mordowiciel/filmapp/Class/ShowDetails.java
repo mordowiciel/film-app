@@ -1,4 +1,4 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Class;
 
 /**
  * Created by mordowiciel on 21.02.17.

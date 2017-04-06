@@ -1,4 +1,4 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Class;
 
 import android.widget.AbsListView;
 

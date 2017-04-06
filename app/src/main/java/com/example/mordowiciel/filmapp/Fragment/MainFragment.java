@@ -1,4 +1,4 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Fragment;
 
 
 import android.content.Intent;
@@ -9,6 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import com.example.mordowiciel.filmapp.Activity.ShowDetailsActivity;
+import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverMovies;
+import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverTv;
+import com.example.mordowiciel.filmapp.Fetch.FetchMoviesPassedParam;
+import com.example.mordowiciel.filmapp.Class.ImageAdapter;
+import com.example.mordowiciel.filmapp.Class.InfiniteScrollListener;
+import com.example.mordowiciel.filmapp.R;
+import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 
 import java.util.ArrayList;
 

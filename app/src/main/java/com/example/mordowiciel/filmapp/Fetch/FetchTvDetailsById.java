@@ -1,8 +1,13 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Fetch;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.mordowiciel.filmapp.BuildConfig;
+import com.example.mordowiciel.filmapp.Class.TvClass;
+import com.example.mordowiciel.filmapp.Class.TvSeasonClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +25,16 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
 
+    private TvDetailsCallback mTvDetailsCallback;
+
+    public FetchTvDetailsById(Context ctx){
+        mTvDetailsCallback = (TvDetailsCallback) ctx;
+    }
+
+    public interface TvDetailsCallback {
+        void onAsyncExecutedPopulateView(TvClass movieDetails);
+    }
+
     @Override
     protected TvClass doInBackground(String... params) {
 
@@ -34,8 +49,7 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
             final String MOVIEDB_AUTHORITY = "api.themoviedb.org";
             final String MOVIEDB_VERSION = "3";
             final String SHOW_TYPE = "tv";
-            //final String TV_ID = params[0];
-            final String TV_ID = "42009";
+            final String TV_ID = params[0];
 
             final String API_KEY_PARAM = "api_key";
             final String LANGUAGE_PARAM = "language";
@@ -140,6 +154,11 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
         }
 
         return tvDetails;
+    }
+
+    @Override
+    protected void onPostExecute(TvClass tvDetails){
+        mTvDetailsCallback.onAsyncExecutedPopulateView(tvDetails);
     }
 
 }

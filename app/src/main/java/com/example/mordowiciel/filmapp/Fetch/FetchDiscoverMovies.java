@@ -1,8 +1,12 @@
-package com.example.mordowiciel.filmapp;
+package com.example.mordowiciel.filmapp.Fetch;
 
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.mordowiciel.filmapp.BuildConfig;
+import com.example.mordowiciel.filmapp.Class.ImageAdapter;
+import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,20 +21,16 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/**
- * Created by mordowiciel on 22.02.17.
- */
-
-public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, ArrayList<ShowThumbnail>> {
+public class FetchDiscoverMovies extends AsyncTask<FetchMoviesPassedParam, Void, ArrayList<ShowThumbnail>> {
 
     private ImageAdapter imageAdapter;
 
-    public FetchDiscoverTv(ImageAdapter imageAdapter) {
+    public FetchDiscoverMovies(ImageAdapter imageAdapter) {
         this.imageAdapter = imageAdapter;
     }
 
     @Override
-    public ArrayList<ShowThumbnail> doInBackground (FetchMoviesPassedParam... params) {
+    protected ArrayList<ShowThumbnail> doInBackground(FetchMoviesPassedParam... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -38,14 +38,15 @@ public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, Arr
 
         try {
 
-            // 1) Build URL.
             final String MOVIEDB_AUTHORITY = "api.themoviedb.org";
             final String MOVIEDB_VERSION = "3";
             final String DISCOVER_PATH = "discover";
-            final String SHOW_TYPE_PATH = "tv";
+            final String SHOW_TYPE_PATH = "movie";
             final String API_KEY_PARAM = "api_key";
             final String LANGUAGE_PARAM = "language";
             final String SORTING_PARAM = "sort_by";
+            final String ADULT_PARAM = "include_adult";
+            final String INCLUDE_VIDEO_PARAM = "include_video";
             final String PAGE_PARAM = "page";
 
             Uri.Builder builtUri = new Uri.Builder();
@@ -57,11 +58,13 @@ public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, Arr
                     .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                     .appendQueryParameter(LANGUAGE_PARAM, "en-US")
                     .appendQueryParameter(SORTING_PARAM, params[0].getSorting())
+                    .appendQueryParameter(ADULT_PARAM, "true")
+                    .appendQueryParameter(INCLUDE_VIDEO_PARAM, "false")
                     .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getPageNumber()));
 
             URL url = new URL(builtUri.build().toString());
 
-            // 2) Connect to the URL.
+            //2) Connect to the URL.
             urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             InputStream inputStream = urlConnection.getInputStream();
@@ -80,9 +83,8 @@ public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, Arr
 
         } catch (IOException e) {
             Log.e("Download exception: ", e.getMessage(), e);
-
+            //return null;
         } finally {
-
             urlConnection.disconnect();
             try {
                 reader.close();
@@ -106,7 +108,7 @@ public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, Arr
                 String movieId = movieObject.getString("id");
 
                 // 2) Get a movie title.
-                String movieTitle = movieObject.getString("name");
+                String movieTitle = movieObject.getString("title");
 
                 // 3) Get a complete link to the poster.
 
@@ -136,9 +138,8 @@ public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, Arr
     }
 
     @Override
-    public void onPostExecute (ArrayList<ShowThumbnail> resultArray) {
-        for (ShowThumbnail showItem : resultArray){
+    protected void onPostExecute(ArrayList<ShowThumbnail> resultArray) {
+        for (ShowThumbnail showItem : resultArray)
             imageAdapter.add(showItem);
-        }
     }
 }
