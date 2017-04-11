@@ -126,7 +126,7 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
                 String seasonAirDate = season.getString("air_date");
                 int seasonEpisodeCount = season.getInt("episode_count");
                 int seasonNumber = season.getInt("season_number");
-                int seasonId = season.getInt("id");
+                String seasonId = String.valueOf(season.getInt("id"));
 
                 Uri.Builder seasonPosterUri = new Uri.Builder();
                 seasonPosterUri.scheme("https")
