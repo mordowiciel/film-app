@@ -1,6 +1,7 @@
 package com.example.mordowiciel.filmapp.Class;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,13 @@ public class SeasonsListAdapter extends RecyclerView.Adapter<SeasonsListAdapter.
 
     class SeasonViewHolder extends RecyclerView.ViewHolder {
 
+        protected CardView cardView;
         protected ImageView imageView;
         protected TextView textView;
 
         public SeasonViewHolder(View view) {
             super(view);
+            this.cardView = (CardView) view.findViewById(R.id.image_item_cardview);
             this.imageView = (ImageView) view.findViewById(R.id.image_item_imageview);
             this.textView = (TextView) view.findViewById(R.id.image_item_textview);
         }
