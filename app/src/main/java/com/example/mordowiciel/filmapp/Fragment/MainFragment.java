@@ -13,7 +13,6 @@ import android.widget.GridView;
 import com.example.mordowiciel.filmapp.Activity.ShowDetailsActivity;
 import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverMovies;
 import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverTv;
-import com.example.mordowiciel.filmapp.Fetch.FetchMoviesPassedParam;
 import com.example.mordowiciel.filmapp.Class.ImageAdapter;
 import com.example.mordowiciel.filmapp.Class.InfiniteScrollListener;
 import com.example.mordowiciel.filmapp.R;
@@ -28,6 +27,7 @@ public class MainFragment extends Fragment {
     private ImageAdapter imageAdapter;
     public boolean tvIsShown;
     public boolean movieIsShown;
+    Bundle filterBundle;
 
     public MainFragment() {
         // Required empty public constructor
@@ -50,8 +50,12 @@ public class MainFragment extends Fragment {
         //Create ASyncTask and execute it.
         movieIsShown = true;
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-        FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
-        fetchDiscoverMovies.execute(params);
+
+        filterBundle = new Bundle();
+        filterBundle.putString("SORTING_PARAM", "popularity.desc");
+        filterBundle.putInt("PAGE_PARAM", 1);
+
+        fetchDiscoverMovies.execute(filterBundle);
 
         //Create a click listener for a particular movie.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,14 +87,15 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
 
-                FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page);
+                //FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page, 2014);
+                filterBundle.putInt("PAGE_PARAM", page);
                 if(movieIsShown){
                     fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-                    fetchDiscoverMovies.execute(params);
+                    fetchDiscoverMovies.execute(filterBundle);
                 }
                 if(tvIsShown){
                     fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
-                    fetchDiscoverTv.execute(params);
+                    fetchDiscoverTv.execute(filterBundle);
                 }
                 return true;
             }
@@ -102,31 +107,29 @@ public class MainFragment extends Fragment {
     public void showPopularMovies() {
         imageAdapter.clear();
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-        FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
-        fetchDiscoverMovies.execute(params);
+        filterBundle.putString("SORTING_PARAM", "popularity.desc");
+        fetchDiscoverMovies.execute(filterBundle);
     }
 
     public void showMostRatedMovies() {
         imageAdapter.clear();
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-        FetchMoviesPassedParam params = new FetchMoviesPassedParam("vote_average.desc", 1);
-        fetchDiscoverMovies.execute(params);
+        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
+        fetchDiscoverMovies.execute(filterBundle);
     }
 
     public void showPopularTv() {
         imageAdapter.clear();
         fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
-        //TEMPORARY
-        FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", 1);
-        fetchDiscoverTv.execute(params);
+        filterBundle.putString("SORTING_PARAM", "popularity.desc");
+        fetchDiscoverTv.execute(filterBundle);
     }
 
     public void showMostRatedTv(){
         imageAdapter.clear();
         fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
-        //TEMPORARY
-        FetchMoviesPassedParam params = new FetchMoviesPassedParam("vote_average.desc", 1);
-        fetchDiscoverTv.execute(params);
+        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
+        fetchDiscoverTv.execute(filterBundle);
     }
 
 

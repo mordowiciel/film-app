@@ -2,6 +2,7 @@ package com.example.mordowiciel.filmapp.Fetch;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mordowiciel.filmapp.BuildConfig;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class FetchDiscoverMovies extends AsyncTask<FetchMoviesPassedParam, Void, ArrayList<ShowThumbnail>> {
+public class FetchDiscoverMovies extends AsyncTask<Bundle, Void, ArrayList<ShowThumbnail>> {
 
     private ImageAdapter imageAdapter;
 
@@ -30,7 +31,7 @@ public class FetchDiscoverMovies extends AsyncTask<FetchMoviesPassedParam, Void,
     }
 
     @Override
-    protected ArrayList<ShowThumbnail> doInBackground(FetchMoviesPassedParam... params) {
+    protected ArrayList<ShowThumbnail> doInBackground(Bundle... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -40,14 +41,19 @@ public class FetchDiscoverMovies extends AsyncTask<FetchMoviesPassedParam, Void,
 
             final String MOVIEDB_AUTHORITY = "api.themoviedb.org";
             final String MOVIEDB_VERSION = "3";
+
+            ////// PATHS //////
             final String DISCOVER_PATH = "discover";
             final String SHOW_TYPE_PATH = "movie";
+
+            ////// PARAMS //////
             final String API_KEY_PARAM = "api_key";
             final String LANGUAGE_PARAM = "language";
             final String SORTING_PARAM = "sort_by";
             final String ADULT_PARAM = "include_adult";
             final String INCLUDE_VIDEO_PARAM = "include_video";
             final String PAGE_PARAM = "page";
+            final String PRIMARY_RELEASE_YEAR_PARAM = "primary_release_year";
 
             Uri.Builder builtUri = new Uri.Builder();
             builtUri.scheme("https")
@@ -57,10 +63,14 @@ public class FetchDiscoverMovies extends AsyncTask<FetchMoviesPassedParam, Void,
                     .appendPath(SHOW_TYPE_PATH)
                     .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                     .appendQueryParameter(LANGUAGE_PARAM, "en-US")
-                    .appendQueryParameter(SORTING_PARAM, params[0].getSorting())
+                    .appendQueryParameter(SORTING_PARAM, params[0].getString("SORTING_PARAM"))
                     .appendQueryParameter(ADULT_PARAM, "true")
                     .appendQueryParameter(INCLUDE_VIDEO_PARAM, "false")
-                    .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getPageNumber()));
+                    .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getInt("PAGE_PARAM")));
+
+            String primaryReleaseYear = params[0].getString("PRIMARY_RELEASE_YEAR_PARAM");
+            if(primaryReleaseYear != null)
+                builtUri.appendQueryParameter(PRIMARY_RELEASE_YEAR_PARAM, primaryReleaseYear);
 
             URL url = new URL(builtUri.build().toString());
 

@@ -2,6 +2,7 @@ package com.example.mordowiciel.filmapp.Fetch;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mordowiciel.filmapp.BuildConfig;
@@ -25,7 +26,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by mordowiciel on 22.02.17.
  */
 
-public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, ArrayList<ShowThumbnail>> {
+public class FetchDiscoverTv extends AsyncTask<Bundle, Void, ArrayList<ShowThumbnail>> {
 
     private ImageAdapter imageAdapter;
 
@@ -34,7 +35,7 @@ public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, Arr
     }
 
     @Override
-    public ArrayList<ShowThumbnail> doInBackground (FetchMoviesPassedParam... params) {
+    public ArrayList<ShowThumbnail> doInBackground (Bundle... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -60,8 +61,8 @@ public class FetchDiscoverTv extends AsyncTask<FetchMoviesPassedParam, Void, Arr
                     .appendPath(SHOW_TYPE_PATH)
                     .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                     .appendQueryParameter(LANGUAGE_PARAM, "en-US")
-                    .appendQueryParameter(SORTING_PARAM, params[0].getSorting())
-                    .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getPageNumber()));
+                    .appendQueryParameter(SORTING_PARAM, params[0].getString("SORTING_PARAM"))
+                    .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getInt("PAGE_PARAM")));
 
             URL url = new URL(builtUri.build().toString());
 
