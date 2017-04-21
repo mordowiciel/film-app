@@ -15,6 +15,7 @@ import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverMovies;
 import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverTv;
 import com.example.mordowiciel.filmapp.Class.ImageAdapter;
 import com.example.mordowiciel.filmapp.Class.InfiniteScrollListener;
+import com.example.mordowiciel.filmapp.Fetch.FetchGenres;
 import com.example.mordowiciel.filmapp.R;
 import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 
@@ -46,7 +47,6 @@ public class MainFragment extends Fragment {
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, showThumbnails);
 
         gridView.setAdapter(imageAdapter);
-
         //Create ASyncTask and execute it.
         movieIsShown = true;
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);

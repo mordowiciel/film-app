@@ -1,6 +1,11 @@
 package com.example.mordowiciel.filmapp.Activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -8,10 +13,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.mordowiciel.filmapp.Database.DatabaseContract;
+import com.example.mordowiciel.filmapp.Database.DatabaseHelper;
+import com.example.mordowiciel.filmapp.Fetch.FetchGenres;
 import com.example.mordowiciel.filmapp.Fragment.MainFragment;
 import com.example.mordowiciel.filmapp.R;
 import com.example.mordowiciel.filmapp.Fragment.SortbyFragment;
@@ -36,6 +45,21 @@ public class MainActivity extends AppCompatActivity
                     .add(R.id.container_main, new MainFragment())
                     .commit();
         }
+
+        // Perform first-time run caching.
+        SharedPreferences preferences = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
+        boolean isFirstRun = preferences.getBoolean("firstRun", true);
+        Log.e("isFirstRun:", String.valueOf(isFirstRun));
+
+        if (isFirstRun) {
+            FetchGenres fetchGenres = new FetchGenres(this);
+            fetchGenres.execute();
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("firstRun", false);
+            editor.commit();
+        }
+
 
         // Create a toolbar for activity.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

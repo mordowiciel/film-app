@@ -6,8 +6,8 @@
 
     <application
         android:allowBackup="true"
-        android:label="FilmApp"
         android:icon="@mipmap/ic_launcher"
+        android:label="FilmApp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

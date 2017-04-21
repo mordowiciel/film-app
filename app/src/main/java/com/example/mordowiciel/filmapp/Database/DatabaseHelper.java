@@ -6,10 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.mordowiciel.filmapp.Database.DatabaseContract.GenreTable;
 
-/**
- * Created by mordowiciel on 20.04.17.
- */
-
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
