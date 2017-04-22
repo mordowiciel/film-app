@@ -17,5 +17,11 @@
         android:title="Sort by"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="Filter by"
+        app:showAsAction="always"></item>
+
 
 </menu>

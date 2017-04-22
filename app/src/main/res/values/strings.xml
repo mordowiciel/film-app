@@ -16,4 +16,7 @@
     <string name="drawer_closed">Drawer closed</string>
     <string name="drawer_opened">Drawer opened</string>
     <string name="title_activity_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
