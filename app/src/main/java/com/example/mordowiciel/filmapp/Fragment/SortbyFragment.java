@@ -48,6 +48,7 @@ public class SortbyFragment extends DialogFragment {
         // !!! inflater.inflate return the rootView, used later in getting TextViews.
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View rootView = inflater.inflate(R.layout.dialog_sortby, null);
+        builder.setTitle("Sort by");
         builder.setView(rootView);
 
         //Set click listeners on both TextViews.

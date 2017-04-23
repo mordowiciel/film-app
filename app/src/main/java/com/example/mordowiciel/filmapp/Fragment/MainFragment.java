@@ -26,6 +26,7 @@ public class MainFragment extends Fragment {
     private FetchDiscoverMovies fetchDiscoverMovies;
     private FetchDiscoverTv fetchDiscoverTv;
     private ImageAdapter imageAdapter;
+    private GridView gridView;
     public boolean tvIsShown;
     public boolean movieIsShown;
     Bundle filterBundle;
@@ -43,11 +44,17 @@ public class MainFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        GridView gridView = (GridView) rootView.findViewById(R.id.fragment_main_gridview);
+        gridView = (GridView) rootView.findViewById(R.id.fragment_main_gridview);
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, showThumbnails);
 
         gridView.setAdapter(imageAdapter);
-        //Create ASyncTask and execute it.
+        return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         movieIsShown = true;
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
 
@@ -70,10 +77,10 @@ public class MainFragment extends Fragment {
                 intentExtras.putString("SHOW_ID", showId);
                 intentExtras.putString("SHOW_TITLE", showTitle);
 
-                if(movieIsShown)
+                if (movieIsShown)
                     intentExtras.putString("SHOW_TYPE", "movie");
 
-                if(tvIsShown)
+                if (tvIsShown)
                     intentExtras.putString("SHOW_TYPE", "tv");
 
                 Intent intent = new Intent(getActivity(), ShowDetailsActivity.class);
@@ -89,18 +96,19 @@ public class MainFragment extends Fragment {
 
                 //FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page, 2014);
                 filterBundle.putInt("PAGE_PARAM", page);
-                if(movieIsShown){
+                if (movieIsShown) {
                     fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
                     fetchDiscoverMovies.execute(filterBundle);
                 }
-                if(tvIsShown){
+                if (tvIsShown) {
                     fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
                     fetchDiscoverTv.execute(filterBundle);
                 }
                 return true;
             }
         });
-        return rootView;
+
+
     }
 
 

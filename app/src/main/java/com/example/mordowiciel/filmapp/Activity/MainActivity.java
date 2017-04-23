@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     /*
 
         /////// *** DIALOG OPTIONS *** ///////
-
+\
     */
 
     public void showSortingDialog() {
@@ -188,6 +188,9 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.container_main, filterFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
+//        DialogFragment filterFragment = new FilterFragment();
+//        filterFragment.show(getSupportFragmentManager(), "filtering");
     }
 
     @Override
