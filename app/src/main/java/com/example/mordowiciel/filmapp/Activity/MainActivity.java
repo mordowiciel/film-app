@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.action_filter:
-                showFilteringDialog();
+                showFilteringFragment();
                 return true;
 
             default:
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     /*
 
         /////// *** DIALOG OPTIONS *** ///////
-\
+
     */
 
     public void showSortingDialog() {
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity
         sortingFragment.show(getSupportFragmentManager(), "sorting");
     }
 
-    public void showFilteringDialog() {
+    public void showFilteringFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -189,8 +189,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
-//        DialogFragment filterFragment = new FilterFragment();
-//        filterFragment.show(getSupportFragmentManager(), "filtering");
     }
 
     @Override

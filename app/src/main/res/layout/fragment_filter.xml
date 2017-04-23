@@ -13,6 +13,7 @@
 
     <EditText
         android:id="@+id/beginningDate"
+        android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/ic_arrow_drop_down"
@@ -26,6 +27,7 @@
 
     <EditText
         android:id="@+id/endingDate"
+        android:focusable="false"
         android:drawableRight="@drawable/ic_arrow_drop_down"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
