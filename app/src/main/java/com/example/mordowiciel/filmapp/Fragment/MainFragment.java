@@ -4,6 +4,7 @@ package com.example.mordowiciel.filmapp.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private FetchDiscoverMovies fetchDiscoverMovies;
     private FetchDiscoverTv fetchDiscoverTv;
@@ -33,6 +34,32 @@ public class MainFragment extends Fragment {
 
     public MainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onSaveInstanceState (Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putBoolean("movieIsShown", movieIsShown);
+        state.putBoolean("tvIsShown", tvIsShown);
+        state.putBundle("filterBundle", filterBundle);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            movieIsShown = savedInstanceState.getBoolean("movieIsShown");
+            tvIsShown = savedInstanceState.getBoolean("tvIsShown");
+            filterBundle = savedInstanceState.getBundle("filterBundle");
+        }
+        else {
+            movieIsShown = true;
+            tvIsShown = false;
+            filterBundle = new Bundle();
+            filterBundle.putString("SORTING_PARAM", "popularity.desc");
+            filterBundle.putInt("PAGE_PARAM", 1);
+        }
     }
 
 
@@ -55,41 +82,18 @@ public class MainFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        movieIsShown = true;
-        fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
+        if(movieIsShown) {
+            fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
+            fetchDiscoverMovies.execute(filterBundle);
+        }
 
-        filterBundle = new Bundle();
-        filterBundle.putString("SORTING_PARAM", "popularity.desc");
-        filterBundle.putInt("PAGE_PARAM", 1);
-
-        fetchDiscoverMovies.execute(filterBundle);
+        if(tvIsShown) {
+            fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
+            fetchDiscoverTv.execute(filterBundle);
+        }
 
         //Create a click listener for a particular movie.
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                String showId = imageAdapter.getItem(position).getShowId();
-                String showTitle = imageAdapter.getItem(position).getShowTitle();
-
-                Bundle intentExtras = new Bundle();
-                intentExtras.putString("SHOW_ID", showId);
-                intentExtras.putString("SHOW_TITLE", showTitle);
-
-                if (movieIsShown)
-                    intentExtras.putString("SHOW_TYPE", "movie");
-
-                if (tvIsShown)
-                    intentExtras.putString("SHOW_TYPE", "tv");
-
-                Intent intent = new Intent(getActivity(), ShowDetailsActivity.class);
-                intent.putExtras(intentExtras);
-
-                startActivity(intent);
-            }
-        });
-
+        gridView.setOnItemClickListener(this);
         gridView.setOnScrollListener(new InfiniteScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
@@ -107,10 +111,29 @@ public class MainFragment extends Fragment {
                 return true;
             }
         });
-
-
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+        String showId = imageAdapter.getItem(position).getShowId();
+        String showTitle = imageAdapter.getItem(position).getShowTitle();
+
+        Bundle intentExtras = new Bundle();
+        intentExtras.putString("SHOW_ID", showId);
+        intentExtras.putString("SHOW_TITLE", showTitle);
+
+        if (movieIsShown)
+            intentExtras.putString("SHOW_TYPE", "movie");
+
+        if (tvIsShown)
+            intentExtras.putString("SHOW_TYPE", "tv");
+
+        Intent intent = new Intent(getActivity(), ShowDetailsActivity.class);
+        intent.putExtras(intentExtras);
+
+        startActivity(intent);
+    }
 
     public void showPopularMovies() {
         imageAdapter.clear();

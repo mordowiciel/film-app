@@ -27,10 +27,18 @@ public class MainActivity extends AppCompatActivity
         implements SortbyFragment.NoticeSortingDialogFragment,
         NavigationView.OnNavigationItemSelectedListener {
 
-
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
+    @Override
+    protected void onSaveInstanceState (Bundle savedInstanceState) {
+
+        super.onSaveInstanceState(savedInstanceState);
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.container_main);
+        getSupportFragmentManager().putFragment(savedInstanceState, "mainFragment", mainFragment);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +47,22 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_drawer);
 
         if (savedInstanceState == null) {
+            MainFragment mainFragment = new MainFragment();
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_main, new MainFragment())
+                    .add(R.id.container_main, mainFragment)
                     .commit();
         }
+
+        if (savedInstanceState != null) {
+            MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, "mainFragment");
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_main, mainFragment)
+                    .commit();
+        }
+
 
         // Perform first-time run caching.
         SharedPreferences preferences = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
@@ -119,16 +139,16 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
 
             case R.id.nav_movie:
+                mainFragment.showPopularMovies();
                 mainFragment.movieIsShown = true;
                 mainFragment.tvIsShown = false;
-                mainFragment.showPopularMovies();
                 getSupportActionBar().setTitle("Movies");
                 break;
 
             case R.id.nav_tv:
+                mainFragment.showPopularTv();
                 mainFragment.movieIsShown = false;
                 mainFragment.tvIsShown = true;
-                mainFragment.showPopularTv();
                 getSupportActionBar().setTitle("TV");
                 break;
 
@@ -199,12 +219,10 @@ public class MainActivity extends AppCompatActivity
 
         if (mainFragment.movieIsShown) {
             mainFragment.showPopularMovies();
-            mainFragment.tvIsShown = false;
         }
 
         if (mainFragment.tvIsShown) {
             mainFragment.showPopularTv();
-            mainFragment.movieIsShown = false;
         }
     }
 
