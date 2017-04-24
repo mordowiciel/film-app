@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -22,14 +23,15 @@ import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class MainFragment extends Fragment implements AdapterView.OnItemClickListener,
+                                            InfiniteScrollListener{
 
     private FetchDiscoverMovies fetchDiscoverMovies;
     private FetchDiscoverTv fetchDiscoverTv;
     private ImageAdapter imageAdapter;
     private GridView gridView;
-    public boolean tvIsShown;
-    public boolean movieIsShown;
+    private boolean tvIsShown;
+    private boolean movieIsShown;
     Bundle filterBundle;
 
     public MainFragment() {
@@ -94,23 +96,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
         //Create a click listener for a particular movie.
         gridView.setOnItemClickListener(this);
-        gridView.setOnScrollListener(new InfiniteScrollListener() {
-            @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
-
-                //FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page, 2014);
-                filterBundle.putInt("PAGE_PARAM", page);
-                if (movieIsShown) {
-                    fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-                    fetchDiscoverMovies.execute(filterBundle);
-                }
-                if (tvIsShown) {
-                    fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
-                    fetchDiscoverTv.execute(filterBundle);
-                }
-                return true;
-            }
-        });
+        gridView.setOnScrollListener(this);
     }
 
     @Override
@@ -135,7 +121,78 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         startActivity(intent);
     }
 
+    // Method to load more data from DB.
+    @Override
+    public boolean onLoadMore(int page, int totalItemsCount) {
+
+        //FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page, 2014);
+        filterBundle.putInt("PAGE_PARAM", page);
+        if (movieIsShown) {
+            fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
+            fetchDiscoverMovies.execute(filterBundle);
+        }
+        if (tvIsShown) {
+            fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
+            fetchDiscoverTv.execute(filterBundle);
+        }
+        return true;
+    }
+
+    @Override
+    public void onScroll (AbsListView view, int firstVisibleItem, int visibleItemCount,
+                          int totalItemCount) {
+
+        // Minimum number of items to have below current scroll position to load more items.
+        int visibleThreshold = 4;
+
+        // The total number of items in the dataset after last load.
+        int previousTotalItemCount = 0;
+
+        // Set the starting page index.
+        int startingPageIndex = 1;
+
+        // The offset number of current page of data received from DB.
+        int currentPage = 0;
+
+        // True - waiting for the set of data to load.
+        boolean loading = true;
+
+
+        // If total item count is 0 - list of items is invalidated, reset to initial state
+        if (totalItemCount < previousTotalItemCount){
+            currentPage = startingPageIndex;
+            previousTotalItemCount = totalItemCount;
+            if (totalItemCount == 0)
+                loading = true;
+        }
+
+        // If data is still loaded, we have to check if the dataset count has changed.
+        // If yes, we accept it and change the page numbers.
+        if (loading && (totalItemCount > previousTotalItemCount)) {
+            loading = false;
+            previousTotalItemCount = totalItemCount;
+            currentPage++;
+        }
+
+        // If data is currently not being downloaded, we have to check if we have reached visible
+        // threshold and reload more data.
+        // If we do need to download more data, execute onMoreLoad.
+
+        if (!loading && (firstVisibleItem + visibleItemCount + visibleThreshold) >= totalItemCount) {
+            loading = true;
+            currentPage++;
+            onLoadMore(currentPage,totalItemCount);
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState){
+        // No action.
+    }
+
     public void showPopularMovies() {
+        movieIsShown = true;
+        tvIsShown = false;
         imageAdapter.clear();
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
         filterBundle.putString("SORTING_PARAM", "popularity.desc");
@@ -143,6 +200,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     public void showMostRatedMovies() {
+        movieIsShown = true;
+        tvIsShown = false;
         imageAdapter.clear();
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
         filterBundle.putString("SORTING_PARAM", "vote_average.desc");
@@ -150,6 +209,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     public void showPopularTv() {
+        movieIsShown = false;
+        tvIsShown = true;
         imageAdapter.clear();
         fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
         filterBundle.putString("SORTING_PARAM", "popularity.desc");
@@ -157,10 +218,20 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     public void showMostRatedTv(){
+        movieIsShown = false;
+        tvIsShown = true;
         imageAdapter.clear();
         fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
         filterBundle.putString("SORTING_PARAM", "vote_average.desc");
         fetchDiscoverTv.execute(filterBundle);
+    }
+
+    public boolean tvIsShown() {
+        return tvIsShown;
+    }
+
+    public boolean movieIsShown() {
+        return movieIsShown;
     }
 
 

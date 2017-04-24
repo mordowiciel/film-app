@@ -140,15 +140,11 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_movie:
                 mainFragment.showPopularMovies();
-                mainFragment.movieIsShown = true;
-                mainFragment.tvIsShown = false;
                 getSupportActionBar().setTitle("Movies");
                 break;
 
             case R.id.nav_tv:
                 mainFragment.showPopularTv();
-                mainFragment.movieIsShown = false;
-                mainFragment.tvIsShown = true;
                 getSupportActionBar().setTitle("TV");
                 break;
 
@@ -217,11 +213,11 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container_main);
 
-        if (mainFragment.movieIsShown) {
+        if (mainFragment.movieIsShown()) {
             mainFragment.showPopularMovies();
         }
 
-        if (mainFragment.tvIsShown) {
+        if (mainFragment.tvIsShown()) {
             mainFragment.showPopularTv();
         }
     }
@@ -231,11 +227,11 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container_main);
 
-        if (mainFragment.movieIsShown) {
+        if (mainFragment.movieIsShown()) {
             mainFragment.showMostRatedMovies();
         }
 
-        if (mainFragment.tvIsShown) {
+        if (mainFragment.movieIsShown()) {
             mainFragment.showMostRatedTv();
         }
     }
