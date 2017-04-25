@@ -34,6 +34,21 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     private boolean movieIsShown;
     Bundle filterBundle;
 
+    // Minimum number of items to have below current scroll position to load more items.
+    int visibleThreshold;
+
+    // The total number of items in the dataset after last load.
+    int previousTotalItemCount;
+
+    // Set the starting page index.
+    int startingPageIndex;
+
+    // The offset number of current page of data received from DB.
+    int currentPage;
+
+    // True - waiting for the set of data to load.
+    boolean loading;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -84,6 +99,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onStart() {
         super.onStart();
 
+        setInitialScrollerState();
         if(movieIsShown) {
             fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
             fetchDiscoverMovies.execute(filterBundle);
@@ -142,21 +158,6 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onScroll (AbsListView view, int firstVisibleItem, int visibleItemCount,
                           int totalItemCount) {
 
-        // Minimum number of items to have below current scroll position to load more items.
-        int visibleThreshold = 4;
-
-        // The total number of items in the dataset after last load.
-        int previousTotalItemCount = 0;
-
-        // Set the starting page index.
-        int startingPageIndex = 1;
-
-        // The offset number of current page of data received from DB.
-        int currentPage = 0;
-
-        // True - waiting for the set of data to load.
-        boolean loading = true;
-
 
         // If total item count is 0 - list of items is invalidated, reset to initial state
         if (totalItemCount < previousTotalItemCount){
@@ -185,6 +186,23 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         }
     }
 
+    private void setInitialScrollerState() {
+        // Minimum number of items to have below current scroll position to load more items.
+        visibleThreshold = 8;
+
+        // The total number of items in the dataset after last load.
+        previousTotalItemCount = 0;
+
+        // Set the starting page index.
+        startingPageIndex = 1;
+
+        // The offset number of current page of data received from DB.
+        currentPage = 0;
+
+        // True - waiting for the set of data to load.
+        loading = true;
+    }
+
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState){
         // No action.
@@ -193,8 +211,10 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public void showPopularMovies() {
         movieIsShown = true;
         tvIsShown = false;
+        setInitialScrollerState();
         imageAdapter.clear();
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
+        filterBundle.putInt("PAGE_PARAM", 1);
         filterBundle.putString("SORTING_PARAM", "popularity.desc");
         fetchDiscoverMovies.execute(filterBundle);
     }
@@ -202,8 +222,10 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public void showMostRatedMovies() {
         movieIsShown = true;
         tvIsShown = false;
+        setInitialScrollerState();
         imageAdapter.clear();
         fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
+        filterBundle.putInt("PAGE_PARAM", 1);
         filterBundle.putString("SORTING_PARAM", "vote_average.desc");
         fetchDiscoverMovies.execute(filterBundle);
     }
@@ -211,8 +233,10 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public void showPopularTv() {
         movieIsShown = false;
         tvIsShown = true;
+        setInitialScrollerState();
         imageAdapter.clear();
         fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
+        filterBundle.putInt("PAGE_PARAM", 1);
         filterBundle.putString("SORTING_PARAM", "popularity.desc");
         fetchDiscoverTv.execute(filterBundle);
     }
@@ -220,8 +244,10 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public void showMostRatedTv(){
         movieIsShown = false;
         tvIsShown = true;
+        setInitialScrollerState();
         imageAdapter.clear();
         fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
+        filterBundle.putInt("PAGE_PARAM", 1);
         filterBundle.putString("SORTING_PARAM", "vote_average.desc");
         fetchDiscoverTv.execute(filterBundle);
     }

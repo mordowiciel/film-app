@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity
             mainFragment.showMostRatedMovies();
         }
 
-        if (mainFragment.movieIsShown()) {
+        if (mainFragment.tvIsShown()) {
             mainFragment.showMostRatedTv();
         }
     }
