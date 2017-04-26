@@ -5,7 +5,6 @@ ATTENTION: Please note that I'm still completing the Udacity course, so the app 
 
 TODO/Refactor list:
 
-- Using ASyncTask for fetching data in background is not really recommended. Use services?
 - Fetching data from server is done in really "vanilla" way. Switch to Retrofit library?
 - Add some settings to the Settings activity.
 - Add dynamic search button to the Main Activity to allow user searching for any movie/tv show.
