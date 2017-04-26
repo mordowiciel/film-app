@@ -31,14 +31,6 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
-    @Override
-    protected void onSaveInstanceState (Bundle savedInstanceState) {
-
-        super.onSaveInstanceState(savedInstanceState);
-        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.container_main);
-        getSupportFragmentManager().putFragment(savedInstanceState, "mainFragment", mainFragment);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,28 +38,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer);
 
-        if (savedInstanceState == null) {
-            MainFragment mainFragment = new MainFragment();
+        MainFragment mainFragment = new MainFragment();
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_main, mainFragment)
-                    .commit();
-        }
-
-        if (savedInstanceState != null) {
-            MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
-                    .getFragment(savedInstanceState, "mainFragment");
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_main, mainFragment)
-                    .commit();
-        }
-
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container_main, mainFragment)
+                .commit();
 
         // Perform first-time run caching.
         SharedPreferences preferences = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         boolean isFirstRun = preferences.getBoolean("firstRun", true);
-        Log.e("isFirstRun:", String.valueOf(isFirstRun));
 
         if (isFirstRun) {
             FetchGenres fetchGenres = new FetchGenres(this);

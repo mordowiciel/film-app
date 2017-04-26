@@ -60,7 +60,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
                     .appendQueryParameter(LANGUAGE_PARAM, "en-US");
 
             URL url = new URL(builtUri.build().toString());
-            Log.e("Url: ", url.toString());
+            //Log.e("Url: ", url.toString());
 
             // 2) Connect to URL.
 
@@ -78,7 +78,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
             }
 
             movieDetailsJsonString = buffer.toString();
-            Log.e("movieJsonString: ", movieDetailsJsonString);
+            //Log.e("movieJsonString: ", movieDetailsJsonString);
 
 
         }
@@ -109,10 +109,10 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
             String overview = jsonRoot.getString("overview");
             String releaseDate = jsonRoot.getString("release_date");
             double voteAverage = jsonRoot.getDouble("vote_average");
-            Log.e("ID: ", id);
-            Log.e("Title: ", title);
-            Log.e("Original title: ", originalTitle);
-            Log.e("Release date: ", releaseDate);
+            //Log.e("ID: ", id);
+            //Log.e("Title: ", title);
+            //Log.e("Original title: ", originalTitle);
+            //Log.e("Release date: ", releaseDate);
 
             Uri.Builder posterUri = new Uri.Builder();
             posterUri.scheme("https")
@@ -125,7 +125,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
                     .appendPath(jsonRoot.getString("poster_path").substring(1));
 
             String fullPosterPath = posterUri.build().toString();
-            Log.e("Movie poster link: ", fullPosterPath);
+            //Log.e("Movie poster link: ", fullPosterPath);
 
             // 5) Save values to returned MovieClass.
             movieDetails = new MovieClass(id, title, originalTitle, overview, releaseDate,

@@ -24,15 +24,18 @@ import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment implements AdapterView.OnItemClickListener,
-                                            InfiniteScrollListener{
+        InfiniteScrollListener {
 
     private FetchDiscoverMovies fetchDiscoverMovies;
     private FetchDiscoverTv fetchDiscoverTv;
     private ImageAdapter imageAdapter;
     private GridView gridView;
+    ArrayList<ShowThumbnail> showThumbnails;
     private boolean tvIsShown;
     private boolean movieIsShown;
     Bundle filterBundle;
+
+    //////////// INFINITE SCROLLER PARAMETERS ////////////
 
     // Minimum number of items to have below current scroll position to load more items.
     int visibleThreshold;
@@ -50,69 +53,37 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     boolean loading;
 
     public MainFragment() {
-        // Required empty public constructor
+
     }
+
 
     @Override
-    public void onSaveInstanceState (Bundle state) {
-        super.onSaveInstanceState(state);
-        state.putBoolean("movieIsShown", movieIsShown);
-        state.putBoolean("tvIsShown", tvIsShown);
-        state.putBundle("filterBundle", filterBundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setInitialScrollerState();
+        showThumbnails = new ArrayList<>();
+        filterBundle = new Bundle();
     }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            movieIsShown = savedInstanceState.getBoolean("movieIsShown");
-            tvIsShown = savedInstanceState.getBoolean("tvIsShown");
-            filterBundle = savedInstanceState.getBundle("filterBundle");
-        }
-        else {
-            movieIsShown = true;
-            tvIsShown = false;
-            filterBundle = new Bundle();
-            filterBundle.putString("SORTING_PARAM", "popularity.desc");
-            filterBundle.putInt("PAGE_PARAM", 1);
-        }
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ArrayList<ShowThumbnail> showThumbnails = new ArrayList<>();
-
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
         gridView = (GridView) rootView.findViewById(R.id.fragment_main_gridview);
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, showThumbnails);
-
         gridView.setAdapter(imageAdapter);
+
+        gridView.setOnItemClickListener(this);
+        gridView.setOnScrollListener(this);
+
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        setInitialScrollerState();
-        if(movieIsShown) {
-            fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-            fetchDiscoverMovies.execute(filterBundle);
-        }
-
-        if(tvIsShown) {
-            fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
-            fetchDiscoverTv.execute(filterBundle);
-        }
-
-        //Create a click listener for a particular movie.
-        gridView.setOnItemClickListener(this);
-        gridView.setOnScrollListener(this);
+        showPopularMovies();
     }
 
     @Override
@@ -141,8 +112,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public boolean onLoadMore(int page, int totalItemsCount) {
 
-        //FetchMoviesPassedParam params = new FetchMoviesPassedParam("popularity.desc", page, 2014);
         filterBundle.putInt("PAGE_PARAM", page);
+
         if (movieIsShown) {
             fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
             fetchDiscoverMovies.execute(filterBundle);
@@ -155,16 +126,13 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     @Override
-    public void onScroll (AbsListView view, int firstVisibleItem, int visibleItemCount,
-                          int totalItemCount) {
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                         int totalItemCount) {
 
-
-        // If total item count is 0 - list of items is invalidated, reset to initial state
-        if (totalItemCount < previousTotalItemCount){
-            currentPage = startingPageIndex;
-            previousTotalItemCount = totalItemCount;
-            if (totalItemCount == 0)
-                loading = true;
+        // If there is no items in the adapter, perform first load.
+        if (totalItemCount == 0) {
+            currentPage++;
+            onLoadMore(currentPage, totalItemCount);
         }
 
         // If data is still loaded, we have to check if the dataset count has changed.
@@ -172,84 +140,61 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         if (loading && (totalItemCount > previousTotalItemCount)) {
             loading = false;
             previousTotalItemCount = totalItemCount;
-            currentPage++;
         }
 
         // If data is currently not being downloaded, we have to check if we have reached visible
         // threshold and reload more data.
         // If we do need to download more data, execute onMoreLoad.
-
         if (!loading && (firstVisibleItem + visibleItemCount + visibleThreshold) >= totalItemCount) {
             loading = true;
             currentPage++;
-            onLoadMore(currentPage,totalItemCount);
+            onLoadMore(currentPage, totalItemCount);
         }
     }
 
     private void setInitialScrollerState() {
-        // Minimum number of items to have below current scroll position to load more items.
-        visibleThreshold = 8;
-
-        // The total number of items in the dataset after last load.
+        visibleThreshold = 4;
         previousTotalItemCount = 0;
-
-        // Set the starting page index.
         startingPageIndex = 1;
-
-        // The offset number of current page of data received from DB.
         currentPage = 0;
-
-        // True - waiting for the set of data to load.
         loading = true;
     }
 
     @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState){
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
         // No action.
     }
 
     public void showPopularMovies() {
         movieIsShown = true;
         tvIsShown = false;
+        filterBundle.putString("SORTING_PARAM", "popularity.desc");
         setInitialScrollerState();
         imageAdapter.clear();
-        fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-        filterBundle.putInt("PAGE_PARAM", 1);
-        filterBundle.putString("SORTING_PARAM", "popularity.desc");
-        fetchDiscoverMovies.execute(filterBundle);
     }
 
     public void showMostRatedMovies() {
         movieIsShown = true;
         tvIsShown = false;
+        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
         setInitialScrollerState();
         imageAdapter.clear();
-        fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
-        filterBundle.putInt("PAGE_PARAM", 1);
-        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
-        fetchDiscoverMovies.execute(filterBundle);
     }
 
     public void showPopularTv() {
         movieIsShown = false;
         tvIsShown = true;
+        filterBundle.putString("SORTING_PARAM", "popularity.desc");
         setInitialScrollerState();
         imageAdapter.clear();
-        fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
-        filterBundle.putInt("PAGE_PARAM", 1);
-        filterBundle.putString("SORTING_PARAM", "popularity.desc");
-        fetchDiscoverTv.execute(filterBundle);
     }
 
-    public void showMostRatedTv(){
+    public void showMostRatedTv() {
         movieIsShown = false;
         tvIsShown = true;
+        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
         setInitialScrollerState();
         imageAdapter.clear();
-        fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
-        filterBundle.putInt("PAGE_PARAM", 1);
-        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
-        fetchDiscoverTv.execute(filterBundle);
     }
 
     public boolean tvIsShown() {
