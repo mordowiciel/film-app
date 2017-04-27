@@ -56,13 +56,33 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBundle("filterBundle", filterBundle);
+        savedInstanceState.putInt("visibleThreshold", visibleThreshold);
+        savedInstanceState.putInt("previousTotalItemCount", previousTotalItemCount);
+        savedInstanceState.putInt("startingPageIndex", startingPageIndex);
+        savedInstanceState.putInt("currentPage", currentPage);
+        savedInstanceState.putBoolean("loading", loading);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInitialScrollerState();
-        showThumbnails = new ArrayList<>();
-        filterBundle = new Bundle();
+        if (savedInstanceState == null) {
+            showThumbnails = new ArrayList<>();
+            filterBundle = new Bundle();
+        } else {
+            filterBundle = savedInstanceState.getBundle("filterBundle");
+            visibleThreshold = savedInstanceState.getInt("visibleThreshold");
+            previousTotalItemCount = savedInstanceState.getInt("previousTotalItemCount");
+            startingPageIndex = savedInstanceState.getInt("startingPageIndex");
+            currentPage = savedInstanceState.getInt("currentPage");
+            loading = savedInstanceState.getBoolean("loading");
+        }
     }
 
     @Override
@@ -77,13 +97,14 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         gridView.setOnItemClickListener(this);
         gridView.setOnScrollListener(this);
 
+        showPopularMovies();
+
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        showPopularMovies();
     }
 
     @Override
@@ -113,6 +134,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public boolean onLoadMore(int page, int totalItemsCount) {
 
         filterBundle.putInt("PAGE_PARAM", page);
+        Log.e("Loading page", String.valueOf(page));
 
         if (movieIsShown) {
             fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);

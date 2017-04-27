@@ -29,7 +29,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class FetchDiscoverTv extends AsyncTask<Bundle, Void, ArrayList<ShowThumbnail>> {
 
     private ImageAdapter imageAdapter;
-
     public FetchDiscoverTv(ImageAdapter imageAdapter) {
         this.imageAdapter = imageAdapter;
     }

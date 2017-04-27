@@ -33,16 +33,33 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.container_main);
+
+        super.onSaveInstanceState(savedInstanceState);
+        getSupportFragmentManager().putFragment(savedInstanceState, "MainFragment", mainFragment);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer);
 
-        MainFragment mainFragment = new MainFragment();
+        if (savedInstanceState == null) {
+            MainFragment mainFragment = new MainFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_main, mainFragment)
+                    .commit();
+        } else {
+            MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, "MainFragment");
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_main, mainFragment)
+                    .commit();
+        }
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container_main, mainFragment)
-                .commit();
 
         // Perform first-time run caching.
         SharedPreferences preferences = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
