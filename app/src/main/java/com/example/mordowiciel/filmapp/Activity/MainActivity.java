@@ -73,8 +73,7 @@ public class MainActivity extends AppCompatActivity
             editor.putBoolean("firstRun", false);
             editor.commit();
         }
-
-
+        
         // Create a toolbar for activity.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

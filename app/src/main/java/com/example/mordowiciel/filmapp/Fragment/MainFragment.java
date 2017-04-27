@@ -56,33 +56,12 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBundle("filterBundle", filterBundle);
-        savedInstanceState.putInt("visibleThreshold", visibleThreshold);
-        savedInstanceState.putInt("previousTotalItemCount", previousTotalItemCount);
-        savedInstanceState.putInt("startingPageIndex", startingPageIndex);
-        savedInstanceState.putInt("currentPage", currentPage);
-        savedInstanceState.putBoolean("loading", loading);
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            showThumbnails = new ArrayList<>();
-            filterBundle = new Bundle();
-        } else {
-            filterBundle = savedInstanceState.getBundle("filterBundle");
-            visibleThreshold = savedInstanceState.getInt("visibleThreshold");
-            previousTotalItemCount = savedInstanceState.getInt("previousTotalItemCount");
-            startingPageIndex = savedInstanceState.getInt("startingPageIndex");
-            currentPage = savedInstanceState.getInt("currentPage");
-            loading = savedInstanceState.getBoolean("loading");
-        }
+        showThumbnails = new ArrayList<>();
+        filterBundle = new Bundle();
     }
 
     @Override
