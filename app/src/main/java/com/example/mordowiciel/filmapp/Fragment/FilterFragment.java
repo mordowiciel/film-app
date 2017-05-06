@@ -1,7 +1,6 @@
 package com.example.mordowiciel.filmapp.Fragment;
 
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,8 +13,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import com.example.mordowiciel.filmapp.R;
@@ -26,11 +27,11 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
 
     private View rootView;
     private Calendar calendar;
-    private EditText startingDate;
-    private EditText endingDate;
+    private EditText startingDateEditText;
+    private EditText endingDateEditText;
     private EditText dateToChange;
-    private EditText minVoteAverageEdit;
-    private EditText maxVoteAverageEdit;
+    private EditText minVoteAverageEditText;
+    private EditText maxVoteAverageEditText;
     private EditText minVoteCountEdit;
     private EditText maxVoteCountEdit;
     private Button filterButton;
@@ -72,17 +73,17 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         super.onStart();
 
         calendar = Calendar.getInstance();
-        startingDate = (EditText) rootView.findViewById(R.id.beginningDate);
-        endingDate = (EditText) rootView.findViewById(R.id.endingDate);
+        startingDateEditText = (EditText) rootView.findViewById(R.id.beginningDate);
+        endingDateEditText = (EditText) rootView.findViewById(R.id.endingDate);
         filterButton = (Button) rootView.findViewById(R.id.filter_button);
-        minVoteAverageEdit = (EditText) rootView.findViewById(R.id.minVoteAverage);
-        maxVoteAverageEdit = (EditText) rootView.findViewById(R.id.maxVoteAverage);
+        minVoteAverageEditText = (EditText) rootView.findViewById(R.id.minVoteAverage);
+        maxVoteAverageEditText = (EditText) rootView.findViewById(R.id.maxVoteAverage);
 
-        startingDate.setOnClickListener(this);
-        endingDate.setOnClickListener(this);
+        startingDateEditText.setOnClickListener(this);
+        endingDateEditText.setOnClickListener(this);
         filterButton.setOnClickListener(this);
-        minVoteAverageEdit.setOnClickListener(this);
-        maxVoteAverageEdit.setOnClickListener(this);
+        minVoteAverageEditText.setOnClickListener(this);
+        maxVoteAverageEditText.setOnClickListener(this);
 
 
     }
@@ -98,47 +99,81 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         switch (view.getId()) {
 
             case R.id.beginningDate:
-                Log.e("BEGINDATE", "Click!");
-                dateToChange = startingDate;
-                new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                dateToChange = startingDateEditText;
+                DatePickerDialog startingDateDialog = new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+                if (!endingDateEditText.getText().toString().equals("")) {
+                    String dateFormat = "dd/MM/yyyy";
+                    SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
+
+                    Date endingDate = null;
+                    try {
+                        endingDate = formatter.parse(endingDateEditText.getText().toString());
+                    } catch (ParseException e) {
+                        Log.e("ParseException", e.getMessage());
+                    }
+
+
+                    startingDateDialog.getDatePicker().setMaxDate(endingDate.getTime());
+                }
+
+                startingDateDialog.show();
+
                 break;
 
             case R.id.endingDate:
-                dateToChange = endingDate;
-                new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                dateToChange = endingDateEditText;
+                DatePickerDialog endingDateDialog = new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+                if (!startingDateEditText.getText().toString().equals("")) {
+                    String dateFormat = "dd/MM/yyyy";
+                    SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
+
+                    Date startingDate = null;
+                    try {
+                        startingDate = formatter.parse(startingDateEditText.getText().toString());
+                    } catch (ParseException e) {
+                        Log.e("ParseException", e.getMessage());
+                    }
+
+
+                    endingDateDialog.getDatePicker().setMinDate(startingDate.getTime());
+                }
+
+                endingDateDialog.show();
                 break;
 
             case R.id.filter_button:
 
                 Log.e("BUTTONPRESSED", "Click!");
                 String startingDateString;
-                if (startingDate.getText().toString().equals(""))
+                if (startingDateEditText.getText().toString().equals(""))
                     startingDateString = null;
                 else
-                    startingDateString = startingDate.getText().toString();
+                    startingDateString = startingDateEditText.getText().toString();
 
                 String endingDateString;
-                if (endingDate.getText().toString().equals(""))
+                if (endingDateEditText.getText().toString().equals(""))
                     endingDateString = null;
                 else
-                    endingDateString = endingDate.getText().toString();
+                    endingDateString = endingDateEditText.getText().toString();
 
                 double minVoteAverage;
-                if (minVoteAverageEdit.getText().toString().equals(""))
+                if (minVoteAverageEditText.getText().toString().equals(""))
                     minVoteAverage = 0;
                 else
-                    minVoteAverage = Double.parseDouble(minVoteAverageEdit.getText().toString());
+                    minVoteAverage = Double.parseDouble(minVoteAverageEditText.getText().toString());
 
                 double maxVoteAverage;
-                if (maxVoteAverageEdit.getText().toString().equals(""))
+                if (maxVoteAverageEditText.getText().toString().equals(""))
                     maxVoteAverage = 10;
                 else
-                    maxVoteAverage = Double.parseDouble(maxVoteAverageEdit.getText().toString());
+                    maxVoteAverage = Double.parseDouble(maxVoteAverageEditText.getText().toString());
 
-                filterBundle.putString("startingDate", startingDateString);
-                filterBundle.putString("endingDate", endingDateString);
+                filterBundle.putString("startingDateEditText", startingDateString);
+                filterBundle.putString("endingDateEditText", endingDateString);
                 filterBundle.putDouble("VOTE_AVERAGE_MIN_PARAM", minVoteAverage);
                 filterBundle.putDouble("VOTE_AVERAGE_MAX_PARAM", maxVoteAverage);
                 filterBundle.putString("SORTING_PARAM", "popularity.desc");
@@ -159,6 +194,17 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
         String dateString = formatter.format(calendar.getTime());
         editText.setText(dateString);
+
+        Date date = null;
+
+        try {
+            date = formatter.parse(dateString);
+        } catch (ParseException e) {
+            Log.e("ParseException", e.getMessage());
+        }
+
+        Log.e("DateString", date.toString());
+
     }
 
     @Override
