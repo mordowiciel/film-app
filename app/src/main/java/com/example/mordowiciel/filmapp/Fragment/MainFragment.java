@@ -76,8 +76,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         gridView.setOnItemClickListener(this);
         gridView.setOnScrollListener(this);
 
-        showPopularMovies();
-
+        //showPopularMovies();
+        setDefaultFilter();
         return rootView;
     }
 
@@ -153,6 +153,11 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         }
     }
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // No action.
+    }
+
     private void setInitialScrollerState() {
         visibleThreshold = 4;
         previousTotalItemCount = 0;
@@ -161,9 +166,24 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         loading = true;
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // No action.
+    private void setDefaultFilter() {
+        movieIsShown = true;
+        tvIsShown = false;
+        filterBundle.putString("SORTING_PARAM", "popularity.desc");
+        setInitialScrollerState();
+        imageAdapter.clear();
+    }
+
+    public void setDataFilter(Bundle filterBundle) {
+        this.filterBundle = filterBundle;
+        setInitialScrollerState();
+        imageAdapter.clear();
+    }
+
+    public void setSortingParameter(String parameter) {
+        this.filterBundle.putString("SORTING_PARAM", parameter);
+        setInitialScrollerState();
+        imageAdapter.clear();
     }
 
     public void showPopularMovies() {

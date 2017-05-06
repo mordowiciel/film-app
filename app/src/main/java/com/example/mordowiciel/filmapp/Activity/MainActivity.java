@@ -25,7 +25,8 @@ import com.example.mordowiciel.filmapp.Fragment.SortbyFragment;
 
 public class MainActivity extends AppCompatActivity
         implements SortbyFragment.NoticeSortingDialogFragment,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        FilterFragment.OnFilterSpecifiedListener {
 
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity
                 .findFragmentById(R.id.container_main);
 
         super.onSaveInstanceState(savedInstanceState);
-        getSupportFragmentManager().putFragment(savedInstanceState, "MainFragment", mainFragment);
+        getSupportFragmentManager().putFragment(savedInstanceState, "mainFragment", mainFragment);
     }
 
     @Override
@@ -50,11 +51,11 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             MainFragment mainFragment = new MainFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_main, mainFragment)
+                    .add(R.id.container_main, mainFragment, "mainFragment")
                     .commit();
         } else {
             MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
-                    .getFragment(savedInstanceState, "MainFragment");
+                    .getFragment(savedInstanceState, "mainFragment");
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container_main, mainFragment)
                     .commit();
@@ -169,7 +170,10 @@ public class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.action_filter:
-                showFilteringFragment();
+                FilterFragment filterFragment = (FilterFragment) getSupportFragmentManager().
+                        findFragmentByTag("filterFragment");
+                if (filterFragment == null)
+                    showFilteringFragment();
                 return true;
 
             default:
@@ -196,7 +200,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit,
                 R.anim.pop_enter, R.anim.pop_exit);
         FilterFragment filterFragment = new FilterFragment();
-        fragmentTransaction.replace(R.id.container_main, filterFragment);
+        fragmentTransaction.replace(R.id.container_main, filterFragment, "filterFragment");
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
@@ -208,13 +212,7 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container_main);
 
-        if (mainFragment.movieIsShown()) {
-            mainFragment.showPopularMovies();
-        }
-
-        if (mainFragment.tvIsShown()) {
-            mainFragment.showPopularTv();
-        }
+        mainFragment.setSortingParameter("popularity.desc");
     }
 
     public void onDialogRatingClick(DialogFragment dialogFragment) {
@@ -222,13 +220,23 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container_main);
 
-        if (mainFragment.movieIsShown()) {
-            mainFragment.showMostRatedMovies();
-        }
+        mainFragment.setSortingParameter("vote_average.desc");
+    }
 
-        if (mainFragment.tvIsShown()) {
-            mainFragment.showMostRatedTv();
-        }
+    public void onFilterSpecified(Bundle filterBundle) {
+
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                .findFragmentByTag("mainFragment");
+        getSupportFragmentManager().popBackStackImmediate();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.container_main, mainFragment);
+        fragmentManager.popBackStackImmediate();
+        fragmentTransaction.commit();
+
+        mainFragment.setDataFilter(filterBundle);
     }
 
 }
