@@ -172,8 +172,30 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
                 else
                     maxVoteAverage = Double.parseDouble(maxVoteAverageEditText.getText().toString());
 
-                filterBundle.putString("startingDateEditText", startingDateString);
-                filterBundle.putString("endingDateEditText", endingDateString);
+
+                String sourceFormat = "dd/MM/yyyy";
+                SimpleDateFormat sourceFormatter = new SimpleDateFormat(sourceFormat,
+                        Locale.getDefault());
+
+                String targetFormat = "yyyy-MM-dd";
+                SimpleDateFormat targetFormatter = new SimpleDateFormat(targetFormat,
+                        Locale.getDefault());
+
+                try {
+                    Date startingDate = sourceFormatter.parse(startingDateEditText.getText().toString());
+                    startingDateString = targetFormatter.format(startingDate);
+
+                    Date endingDate = sourceFormatter.parse(endingDateEditText.getText().toString());
+                    endingDateString = targetFormatter.format(endingDate);
+                } catch (ParseException e) {
+                    Log.e("ParseException", e.getMessage());
+                }
+
+                Log.e("StartingDateString", "" + startingDateString);
+                Log.e("EndingDateString", "" + endingDateString);
+
+                filterBundle.putString("PRIMARY_RELEASE_DATE_MIN_PARAM", startingDateString);
+                filterBundle.putString("PRIMARY_RELEASE_DATE_MAX_PARAM", endingDateString);
                 filterBundle.putDouble("VOTE_AVERAGE_MIN_PARAM", minVoteAverage);
                 filterBundle.putDouble("VOTE_AVERAGE_MAX_PARAM", maxVoteAverage);
                 filterBundle.putString("SORTING_PARAM", "popularity.desc");
@@ -181,15 +203,12 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
                 break;
 
             default:
-                Log.e("DEFAULTCLICK", "Click!");
                 break;
         }
     }
 
     private void updateDateLabel(EditText editText, Calendar calendar) {
 
-        // TODO : Handle user input (for ex. ending date can't be lower than beginning date)
-        // TODO : Change the dateFormat to the format used by the API.
         String dateFormat = "dd/MM/yyyy";
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
         String dateString = formatter.format(calendar.getTime());

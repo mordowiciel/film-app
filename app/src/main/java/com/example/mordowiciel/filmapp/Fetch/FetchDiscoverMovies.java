@@ -53,8 +53,8 @@ public class FetchDiscoverMovies extends AsyncTask<Bundle, Void, ArrayList<ShowT
             final String ADULT_PARAM = "include_adult";
             final String INCLUDE_VIDEO_PARAM = "include_video";
             final String PAGE_PARAM = "page";
-            final String PRIMARY_RELEASE_YEAR_MIN_PARAM = "primary_release_year.gte";
-            final String PRIMARY_RELEASE_YEAR_MAX_PARAM = "primary_release_year.lte";
+            final String PRIMARY_RELEASE_DATE_MIN_PARAM = "primary_release_date.gte";
+            final String PRIMARY_RELEASE_DATE_MAX_PARAM = "primary_release_date.lte";
             final String VOTE_AVERAGE_MIN_PARAM = "vote_average.gte";
             final String VOTE_AVERAGE_MAX_PARAM = "vote_average.lte";
 
@@ -71,24 +71,28 @@ public class FetchDiscoverMovies extends AsyncTask<Bundle, Void, ArrayList<ShowT
                     .appendQueryParameter(INCLUDE_VIDEO_PARAM, "false")
                     .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getInt("PAGE_PARAM")));
 
-            if (params[0].getDouble("VOTE_AVERAGE_MIN_PARAM") != 0) {
-                builtUri.appendQueryParameter(VOTE_AVERAGE_MIN_PARAM,
-                        Double.toString(params[0].getDouble("VOTE_AVERAGE_MIN_PARAM")));
+            double voteAverageMin = params[0].getDouble("VOTE_AVERAGE_MIN_PARAM");
+            if (voteAverageMin != 0) {
+                builtUri.appendQueryParameter(VOTE_AVERAGE_MIN_PARAM, Double.toString(voteAverageMin));
             }
 
-            if (params[0].getDouble("VOTE_AVERAGE_MAX_PARAM") != 0) {
-                builtUri.appendQueryParameter(VOTE_AVERAGE_MAX_PARAM,
-                        Double.toString(params[0].getDouble("VOTE_AVERAGE_MAX_PARAM")));
+            double voteAverageMax = params[0].getDouble("VOTE_AVERAGE_MAX_PARAM");
+            if (voteAverageMax != 0) {
+                builtUri.appendQueryParameter(VOTE_AVERAGE_MAX_PARAM, Double.toString(voteAverageMax));
             }
 
-            Log.e("VoteAverageMin", String.valueOf(params[0].getDouble("VOTE_AVERAGE_MIN_PARAM")));
-            Log.e("VoteAverageMax", String.valueOf(params[0].getDouble("VOTE_AVERAGE_MAX_PARAM")));
+            String minDate = params[0].getString("PRIMARY_RELEASE_DATE_MIN_PARAM");
+            if (minDate != null) {
+                builtUri.appendQueryParameter(PRIMARY_RELEASE_DATE_MIN_PARAM, minDate);
+            }
 
+            String maxDate = params[0].getString("PRIMARY_RELEASE_DATE_MAX_PARAM");
+            if (maxDate != null) {
+                builtUri.appendQueryParameter(PRIMARY_RELEASE_DATE_MAX_PARAM, maxDate);
+            }
 
             URL url = new URL(builtUri.build().toString());
-
             Log.e("URL", builtUri.build().toString());
-
 
             //2) Connect to the URL.
             urlConnection = (HttpsURLConnection) url.openConnection();

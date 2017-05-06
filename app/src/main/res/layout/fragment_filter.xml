@@ -54,11 +54,12 @@
 
         <EditText
             android:id="@+id/minVoteAverage"
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minEms="5"
-            android:hint="0.0" />
+            android:gravity="center"
+            android:hint="0.0"
+            android:inputType="numberDecimal"
+            android:minEms="5" />
 
         <TextView
             android:layout_marginLeft="16dp"
@@ -70,11 +71,12 @@
 
         <EditText
             android:id="@+id/maxVoteAverage"
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minEms="5"
-            android:hint="10.0" />
+            android:gravity="center"
+            android:hint="10.0"
+            android:inputType="numberDecimal"
+            android:minEms="5" />
     </LinearLayout>
 
     <TextView
@@ -97,10 +99,11 @@
 
         <EditText
             android:layout_width="wrap_content"
-            android:gravity="center"
             android:layout_height="wrap_content"
-            android:minEms="5"
-            android:hint="0" />
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="number"
+            android:minEms="5" />
 
         <TextView
             android:layout_marginLeft="16dp"
@@ -112,10 +115,11 @@
 
         <EditText
             android:layout_width="wrap_content"
-            android:gravity="center"
             android:layout_height="wrap_content"
-            android:minEms="5"
-            android:hint="Any" />
+            android:gravity="center"
+            android:hint="Any"
+            android:inputType="number"
+            android:minEms="5" />
 
     </LinearLayout>
 
