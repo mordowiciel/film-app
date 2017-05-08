@@ -38,19 +38,19 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     //////////// INFINITE SCROLLER PARAMETERS ////////////
 
     // Minimum number of items to have below current scroll position to load more items.
-    int visibleThreshold;
+    int visibleThreshold = 4;
 
     // The total number of items in the dataset after last load.
-    int previousTotalItemCount;
+    int previousTotalItemCount = 0;
 
     // Set the starting page index.
-    int startingPageIndex;
+    int startingPageIndex = 1;
 
     // The offset number of current page of data received from DB.
-    int currentPage;
+    int currentPage = 0;
 
     // True - waiting for the set of data to load.
-    boolean loading;
+    boolean loading = true;
 
     public MainFragment() {
 
@@ -73,17 +73,17 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, showThumbnails);
         gridView.setAdapter(imageAdapter);
 
-        gridView.setOnItemClickListener(this);
-        gridView.setOnScrollListener(this);
-
-        showPopularMovies();
+        setInitialViewState();
 
         return rootView;
     }
 
     @Override
     public void onStart() {
+
         super.onStart();
+        gridView.setOnItemClickListener(this);
+        gridView.setOnScrollListener(this);
     }
 
     @Override
@@ -164,6 +164,12 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         // No action.
+    }
+
+    public void setInitialViewState() {
+        movieIsShown = true;
+        tvIsShown = false;
+        filterBundle.putString("SORTING_PARAM", "popularity.desc");
     }
 
     public void showPopularMovies() {
