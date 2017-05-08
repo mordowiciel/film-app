@@ -64,7 +64,7 @@ public class FetchDiscoverMovies extends AsyncTask<Bundle, Void, ArrayList<ShowT
                     .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                     .appendQueryParameter(LANGUAGE_PARAM, "en-US")
                     .appendQueryParameter(SORTING_PARAM, params[0].getString("SORTING_PARAM"))
-                    .appendQueryParameter(ADULT_PARAM, "true")
+                    .appendQueryParameter(ADULT_PARAM, "false")
                     .appendQueryParameter(INCLUDE_VIDEO_PARAM, "false")
                     .appendQueryParameter(PAGE_PARAM, Integer.toString(params[0].getInt("PAGE_PARAM")));
 
@@ -122,22 +122,25 @@ public class FetchDiscoverMovies extends AsyncTask<Bundle, Void, ArrayList<ShowT
 
                 // 3) Get a complete link to the poster.
 
-                String posterPath = movieObject.getString("poster_path");
-                posterPath = posterPath.substring(1);
+                String posterSubPath = movieObject.getString("poster_path");
+                String posterFullPath = null;
                 //Log.e("Default posterPath: ", posterPath);
 
-                Uri.Builder builtUri = new Uri.Builder();
-                builtUri.scheme("https")
-                        .encodedAuthority("image.tmdb.org")
-                        .appendPath("t")
-                        .appendPath("p")
-                        .appendPath("w500")
-                        .appendPath(posterPath);
-                String moviePosterLink = builtUri.build().toString();
+                if (posterSubPath != "null") {
+                    Uri.Builder builtUri = new Uri.Builder();
+                    builtUri.scheme("https")
+                            .encodedAuthority("image.tmdb.org")
+                            .appendPath("t")
+                            .appendPath("p")
+                            .appendPath("w500")
+                            .appendPath(posterSubPath.substring(1));
+
+                    posterFullPath = builtUri.build().toString();
+                }
                 //Log.e("Build URL: ", moviePosterLink);
 
                 // 4) Save values to the ArrayList.
-                ShowThumbnail thumbnail = new ShowThumbnail(movieId, movieTitle, moviePosterLink);
+                ShowThumbnail thumbnail = new ShowThumbnail(movieId, movieTitle, posterFullPath);
                 showThumbnailsList.add(thumbnail);
             }
         } catch (JSONException e) {

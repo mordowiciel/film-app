@@ -114,22 +114,26 @@ public class FetchDiscoverTv extends AsyncTask<Bundle, Void, ArrayList<ShowThumb
 
                 // 3) Get a complete link to the poster.
 
-                String posterPath = movieObject.getString("poster_path");
-                posterPath = posterPath.substring(1);
+                String posterSubPath = movieObject.getString("poster_path");
+                String posterFullPath = null;
                 //Log.e("Default posterPath: ", posterPath);
 
-                Uri.Builder builtUri = new Uri.Builder();
-                builtUri.scheme("https")
-                        .encodedAuthority("image.tmdb.org")
-                        .appendPath("t")
-                        .appendPath("p")
-                        .appendPath("w500")
-                        .appendPath(posterPath);
-                String moviePosterLink = builtUri.build().toString();
+                if (posterSubPath != "null") {
+                    Uri.Builder builtUri = new Uri.Builder();
+                    builtUri.scheme("https")
+                            .encodedAuthority("image.tmdb.org")
+                            .appendPath("t")
+                            .appendPath("p")
+                            .appendPath("w500")
+                            .appendPath(posterSubPath.substring(1));
+
+                    posterFullPath = builtUri.build().toString();
+                }
+
                 //Log.e("Build URL: ", moviePosterLink);
 
                 // 4) Save values to the ArrayList.
-                ShowThumbnail thumbnail = new ShowThumbnail(movieId, movieTitle, moviePosterLink);
+                ShowThumbnail thumbnail = new ShowThumbnail(movieId, movieTitle, posterFullPath);
                 showThumbnailsList.add(thumbnail);
             }
         } catch (JSONException e) {

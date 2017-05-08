@@ -1,6 +1,7 @@
 package com.example.mordowiciel.filmapp.Class;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,9 +52,16 @@ public class SeasonsListAdapter extends RecyclerView.Adapter<SeasonsListAdapter.
     public void onBindViewHolder (SeasonViewHolder seasonViewHolder, int i) {
 
         ShowThumbnail showThumbnailItem = showThumbnailsList.get(i);
-        Picasso.with(ctx).load(showThumbnailItem.getShowPosterLink())
-                .fit()
-                .into(seasonViewHolder.imageView);
+
+        if (showThumbnailItem.getShowPosterLink() != null) {
+            Picasso.with(ctx).load(showThumbnailItem.getShowPosterLink())
+                    .fit()
+                    .into(seasonViewHolder.imageView);
+        } else {
+            seasonViewHolder.imageView.setImageDrawable(ContextCompat.getDrawable(ctx,
+                    R.drawable.no_picture_poster));
+        }
+
         seasonViewHolder.textView.setText(showThumbnailItem.getShowTitle());
     }
 
