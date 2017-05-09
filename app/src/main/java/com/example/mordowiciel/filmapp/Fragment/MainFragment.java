@@ -56,7 +56,6 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,19 +6,15 @@ import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.mordowiciel.filmapp.Fetch.FetchGenres;
-import com.example.mordowiciel.filmapp.Fragment.FilterFragment;
 import com.example.mordowiciel.filmapp.Fragment.MainFragment;
 import com.example.mordowiciel.filmapp.R;
 import com.example.mordowiciel.filmapp.Fragment.SortbyFragment;
@@ -168,10 +164,6 @@ public class MainActivity extends AppCompatActivity
                 showSortingDialog();
                 return true;
 
-            case R.id.action_filter:
-                showFilteringFragment();
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -187,19 +179,6 @@ public class MainActivity extends AppCompatActivity
 
         DialogFragment sortingFragment = new SortbyFragment();
         sortingFragment.show(getSupportFragmentManager(), "sorting");
-    }
-
-    public void showFilteringFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit,
-                R.anim.pop_enter, R.anim.pop_exit);
-        FilterFragment filterFragment = new FilterFragment();
-        fragmentTransaction.replace(R.id.container_main, filterFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-
     }
 
     @Override
