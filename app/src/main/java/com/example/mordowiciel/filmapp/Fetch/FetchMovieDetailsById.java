@@ -109,27 +109,37 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
             String overview = jsonRoot.getString("overview");
             String releaseDate = jsonRoot.getString("release_date");
             double voteAverage = jsonRoot.getDouble("vote_average");
+            String posterSubPath = jsonRoot.getString("poster_path");
+            String posterFullPath = null;
             //Log.e("ID: ", id);
             //Log.e("Title: ", title);
             //Log.e("Original title: ", originalTitle);
             //Log.e("Release date: ", releaseDate);
 
-            Uri.Builder posterUri = new Uri.Builder();
-            posterUri.scheme("https")
-                    .encodedAuthority("image.tmdb.org")
-                    .appendPath("t")
-                    .appendPath("p")
-                    .appendPath("w500")
-                    // Using the substring to eliminate the first sign ("/") from the poster path.
-                    // It is going to be appended by Uri.Builder.
-                    .appendPath(jsonRoot.getString("poster_path").substring(1));
+            if (posterSubPath != "null") {
+                Uri.Builder posterUri = new Uri.Builder();
+                posterUri.scheme("https")
+                        .encodedAuthority("image.tmdb.org")
+                        .appendPath("t")
+                        .appendPath("p")
+                        .appendPath("w500")
+                        // Using the substring to eliminate the first sign ("/") from the poster path.
+                        // It is going to be appended by Uri.Builder.
+                        .appendPath(posterSubPath.substring(1));
 
-            String fullPosterPath = posterUri.build().toString();
-            //Log.e("Movie poster link: ", fullPosterPath);
+                posterFullPath = posterUri.build().toString();
+            }
+            Log.e("Movie poster link: ", "" + posterFullPath);
+
+            if (overview.equals("null") || overview.equals(""))
+                overview = "No overview found.";
+
+            if (releaseDate.equals("null") || releaseDate.equals(""))
+                releaseDate = "No info found.";
 
             // 5) Save values to returned MovieClass.
             movieDetails = new MovieClass(id, title, originalTitle, overview, releaseDate,
-                    voteAverage, fullPosterPath);
+                    voteAverage, posterFullPath);
 
         }
         catch (JSONException e){

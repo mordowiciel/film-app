@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
+
+        Log.e("onSaveInstanceState", "MainActivity - saving mainFragment state!");
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container_main);
 
@@ -194,12 +196,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showFilteringFragment() {
+
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                .findFragmentByTag("mainFragment");
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit,
                 R.anim.pop_enter, R.anim.pop_exit);
         FilterFragment filterFragment = new FilterFragment();
+        filterFragment.setArguments(mainFragment.getFilterBundle());
         fragmentTransaction.replace(R.id.container_main, filterFragment, "filterFragment");
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -225,17 +232,14 @@ public class MainActivity extends AppCompatActivity
 
     public void onFilterSpecified(Bundle filterBundle) {
 
-        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
-                .findFragmentByTag("mainFragment");
-        getSupportFragmentManager().popBackStackImmediate();
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragmentTransaction.replace(R.id.container_main, mainFragment);
         fragmentManager.popBackStackImmediate();
         fragmentTransaction.commit();
 
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                .findFragmentByTag("mainFragment");
         mainFragment.setDataFilter(filterBundle);
     }
 

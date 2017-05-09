@@ -1,6 +1,7 @@
 package com.example.mordowiciel.filmapp.Class;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +34,16 @@ public class ImageAdapter extends ArrayAdapter<ShowThumbnail> {
 
         if (item != null) {
             textView.setText(item.getShowTitle());
-            Picasso.with(getContext())
-                    .load(item.getShowPosterLink())
-                    .fit()
-                    .into(imageView);
+
+            if (item.getShowPosterLink() != null) {
+                Picasso.with(getContext())
+                        .load(item.getShowPosterLink())
+                        .fit()
+                        .into(imageView);
+            } else {
+                imageView.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                        R.drawable.no_picture_poster));
+            }
         }
 
         return convertView;

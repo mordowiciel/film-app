@@ -49,13 +49,13 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onAttach(Context ctx) {
-        filterBundle = new Bundle();
+        filterBundle = getArguments();
         super.onAttach(ctx);
         try {
             mFilterListener = (OnFilterSpecifiedListener) ctx;
         } catch (ClassCastException e) {
             throw new ClassCastException(ctx.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement onFilterSpecifiedListener");
         }
     }
 
@@ -147,7 +147,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
 
             case R.id.filter_button:
 
-                Log.e("BUTTONPRESSED", "Click!");
+                Log.e("FilterFragment", "Clicked filter button!");
                 String startingDateString;
                 if (startingDateEditText.getText().toString().equals(""))
                     startingDateString = null;
@@ -198,7 +198,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
                 filterBundle.putString("PRIMARY_RELEASE_DATE_MAX_PARAM", endingDateString);
                 filterBundle.putDouble("VOTE_AVERAGE_MIN_PARAM", minVoteAverage);
                 filterBundle.putDouble("VOTE_AVERAGE_MAX_PARAM", maxVoteAverage);
-                filterBundle.putString("SORTING_PARAM", "popularity.desc");
                 mFilterListener.onFilterSpecified(filterBundle);
                 break;
 

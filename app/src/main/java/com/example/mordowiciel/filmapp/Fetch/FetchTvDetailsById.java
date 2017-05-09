@@ -104,18 +104,29 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
             double voteAverage = jsonRoot.getDouble("vote_average");
 
             // Get the poster for the whole series.
-            Uri.Builder posterUri = new Uri.Builder();
-            posterUri.scheme("https")
-                    .encodedAuthority("image.tmdb.org")
-                    .appendPath("t")
-                    .appendPath("p")
-                    .appendPath("w500")
-                    // Using the substring to eliminate the first sign ("/") from the poster path.
-                    // It is going to be appended by Uri.Builder.
-                    .appendPath(jsonRoot.getString("poster_path").substring(1));
+            String posterSubPath = jsonRoot.getString("poster_path");
+            String fullPosterPath = null;
 
-            String fullPosterPath = posterUri.build().toString();
-            Log.e("TV poster link: ", fullPosterPath);
+            if (posterSubPath != "null") {
+                Uri.Builder posterUri = new Uri.Builder();
+                posterUri.scheme("https")
+                        .encodedAuthority("image.tmdb.org")
+                        .appendPath("t")
+                        .appendPath("p")
+                        .appendPath("w500")
+                        // Using the substring to eliminate the first sign ("/") from the poster path.
+                        // It is going to be appended by Uri.Builder.
+                        .appendPath(posterSubPath.substring(1));
+
+                fullPosterPath = posterUri.build().toString();
+            }
+            Log.e("TV poster link: ", "" + fullPosterPath);
+
+            if (overview.equals("null") || overview.equals(""))
+                overview = "No overview found.";
+
+            if (airdate.equals("null") || airdate.equals(""))
+                airdate = "No info found.";
 
             // Get information about specific seasons.
             JSONArray seasonJsonArray = jsonRoot.getJSONArray("seasons");
@@ -128,20 +139,25 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
                 int seasonNumber = season.getInt("season_number");
                 String seasonId = String.valueOf(season.getInt("id"));
 
-                Uri.Builder seasonPosterUri = new Uri.Builder();
-                seasonPosterUri.scheme("https")
-                        .encodedAuthority("image.tmdb.org")
-                        .appendPath("t")
-                        .appendPath("p")
-                        .appendPath("w500")
-                        // Using the substring to eliminate the first sign ("/") from the poster path.
-                        // It is going to be appended by Uri.Builder.
-                        .appendPath(season.getString("poster_path").substring(1));
+                String seasonPosterSubpath = season.getString("poster_path");
+                String seasonPosterFullPath = null;
 
-                String seasonPosterPath = seasonPosterUri.build().toString();
+                if (seasonPosterSubpath != "null") {
+                    Uri.Builder seasonPosterUri = new Uri.Builder();
+                    seasonPosterUri.scheme("https")
+                            .encodedAuthority("image.tmdb.org")
+                            .appendPath("t")
+                            .appendPath("p")
+                            .appendPath("w500")
+                            // Using the substring to eliminate the first sign ("/") from the poster path.
+                            // It is going to be appended by Uri.Builder.
+                            .appendPath(seasonPosterSubpath.substring(1));
+
+                    seasonPosterFullPath = seasonPosterUri.build().toString();
+                }
 
                 TvSeasonClass tvSeason = new TvSeasonClass(seasonAirDate, seasonEpisodeCount, seasonId,
-                        seasonPosterPath, seasonNumber);
+                        seasonPosterFullPath, seasonNumber);
                 seasonsList.add(tvSeason);
             }
 

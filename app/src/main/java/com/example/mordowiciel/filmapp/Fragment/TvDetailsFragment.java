@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -85,9 +86,15 @@ public class TvDetailsFragment extends Fragment {
         Activity mActivity = getActivity();
 
         ImageView imageView = (ImageView) mActivity.findViewById(R.id.tv_details_imageview);
-        Picasso.with(mActivity).load(tvDetails.getShowPosterLink())
-                .fit()
-                .into(imageView);
+
+        if (tvDetails.getShowPosterLink() != null) {
+            Picasso.with(mActivity).load(tvDetails.getShowPosterLink())
+                    .fit()
+                    .into(imageView);
+        } else {
+            imageView.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                    R.drawable.no_picture_poster));
+        }
 
         TextView titleView = (TextView) mActivity.findViewById(R.id.tv_details_title_textview);
         titleView.setText(Html.fromHtml("<b>" + "Original title: " + "</b> <br>"

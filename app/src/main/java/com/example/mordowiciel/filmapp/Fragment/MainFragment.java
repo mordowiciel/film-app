@@ -58,9 +58,11 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.e("onCreateMainFragment", "in onCreate!");
         super.onCreate(savedInstanceState);
         showThumbnails = new ArrayList<>();
         filterBundle = new Bundle();
+        setInitialViewState();
     }
 
     @Override
@@ -72,12 +74,12 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, showThumbnails);
         gridView.setAdapter(imageAdapter);
 
-        setInitialViewState();
         return rootView;
     }
 
     @Override
     public void onStart() {
+        Log.e("MySortingParam", "" + filterBundle.getString("SORTING_PARAM"));
         gridView.setOnItemClickListener(this);
         gridView.setOnScrollListener(this);
         super.onStart();
@@ -111,6 +113,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
         filterBundle.putInt("PAGE_PARAM", page);
         Log.e("Loading page", String.valueOf(page));
+        Log.e("Sorting parameter", String.valueOf(filterBundle.getString("SORTING_PARAM")));
 
         if (movieIsShown) {
             fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
@@ -155,6 +158,10 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         // No action.
     }
 
+    public Bundle getFilterBundle(){
+        return this.filterBundle;
+    }
+
     private void setInitialScrollerState() {
         visibleThreshold = 4;
         previousTotalItemCount = 0;
@@ -168,14 +175,6 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         tvIsShown = false;
         filterBundle.putString("SORTING_PARAM", "popularity.desc");
     }
-
-//    private void setDefaultFilter() {
-//        movieIsShown = true;
-//        tvIsShown = false;
-//        filterBundle.putString("SORTING_PARAM", "popularity.desc");
-//        setInitialScrollerState();
-//        imageAdapter.clear();
-//    }
 
     public void setDataFilter(Bundle filterBundle) {
         this.filterBundle = filterBundle;
@@ -197,14 +196,6 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         imageAdapter.clear();
     }
 
-//    public void showMostRatedMovies() {
-//        movieIsShown = true;
-//        tvIsShown = false;
-//        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
-//        setInitialScrollerState();
-//        imageAdapter.clear();
-//    }
-
     public void showPopularTv() {
         movieIsShown = false;
         tvIsShown = true;
@@ -212,23 +203,6 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         setInitialScrollerState();
         imageAdapter.clear();
     }
-
-//    public void showMostRatedTv() {
-//        movieIsShown = false;
-//        tvIsShown = true;
-//        filterBundle.putString("SORTING_PARAM", "vote_average.desc");
-//        setInitialScrollerState();
-//        imageAdapter.clear();
-//    }
-
-//    public boolean tvIsShown() {
-//        return tvIsShown;
-//    }
-//
-//    public boolean movieIsShown() {
-//        return movieIsShown;
-//    }
-
 
 }
 

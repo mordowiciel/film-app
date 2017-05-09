@@ -3,6 +3,7 @@ package com.example.mordowiciel.filmapp.Fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -46,9 +47,14 @@ public class MovieDetailsFragment extends Fragment {
         Activity mActivity = getActivity();
 
         ImageView imageView = (ImageView) mActivity.findViewById(R.id.movie_details_imageview);
-        Picasso.with(mActivity).load(movieDetails.getShowPosterLink())
-                .fit()
-                .into(imageView);
+        if (movieDetails.getShowPosterLink() != null) {
+            Picasso.with(mActivity).load(movieDetails.getShowPosterLink())
+                    .fit()
+                    .into(imageView);
+        } else {
+            imageView.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                    R.drawable.no_picture_poster));
+        }
 
         TextView titleView = (TextView) mActivity.findViewById(R.id.movie_details_title_textview);
         titleView.setText( Html.fromHtml("<b>" + "Original title: " + "</b> <br>"
