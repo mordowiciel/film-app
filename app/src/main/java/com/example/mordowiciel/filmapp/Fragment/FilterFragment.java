@@ -85,6 +85,8 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         startingDateEditText = (EditText) rootView.findViewById(R.id.beginningDate);
         endingDateEditText = (EditText) rootView.findViewById(R.id.endingDate);
         filterButton = (Button) rootView.findViewById(R.id.filter_button);
+        minVoteCountEditText = (EditText) rootView.findViewById(R.id.minVoteCount);
+        maxVoteCountEditText = (EditText) rootView.findViewById(R.id.maxVoteCount);
         minVoteAverageEditText = (EditText) rootView.findViewById(R.id.minVoteAverage);
         maxVoteAverageEditText = (EditText) rootView.findViewById(R.id.maxVoteAverage);
         genreEditText = (EditText) rootView.findViewById(R.id.genre);
@@ -92,8 +94,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         startingDateEditText.setOnClickListener(this);
         endingDateEditText.setOnClickListener(this);
         filterButton.setOnClickListener(this);
-        minVoteAverageEditText.setOnClickListener(this);
-        maxVoteAverageEditText.setOnClickListener(this);
         genreEditText.setOnClickListener(this);
 
 
@@ -175,6 +175,18 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
                 else
                     endingDateString = endingDateEditText.getText().toString();
 
+                int minVoteCount;
+                if (minVoteCountEditText.getText().toString().equals(""))
+                    minVoteCount = 0;
+                else
+                    minVoteCount = Integer.parseInt(minVoteCountEditText.getText().toString());
+
+                int maxVoteCount;
+                if (maxVoteCountEditText.getText().toString().equals(""))
+                    maxVoteCount = 0;
+                else
+                    maxVoteCount = Integer.parseInt(minVoteCountEditText.getText().toString());
+
                 double minVoteAverage;
                 if (minVoteAverageEditText.getText().toString().equals(""))
                     minVoteAverage = 0;
@@ -211,6 +223,8 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
 
                 filterBundle.putString("PRIMARY_RELEASE_DATE_MIN_PARAM", startingDateString);
                 filterBundle.putString("PRIMARY_RELEASE_DATE_MAX_PARAM", endingDateString);
+                filterBundle.putInt("VOTE_COUNT_MIN_PARAM", minVoteCount);
+                filterBundle.putInt("VOTE_COUNT_MAX_PARAM", maxVoteCount);
                 filterBundle.putDouble("VOTE_AVERAGE_MIN_PARAM", minVoteAverage);
                 filterBundle.putDouble("VOTE_AVERAGE_MAX_PARAM", maxVoteAverage);
                 mFilterListener.onFilterSpecified(filterBundle);

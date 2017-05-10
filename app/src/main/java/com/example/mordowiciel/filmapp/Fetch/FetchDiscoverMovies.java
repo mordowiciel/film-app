@@ -55,6 +55,8 @@ public class FetchDiscoverMovies extends AsyncTask<Bundle, Void, ArrayList<ShowT
             final String PAGE_PARAM = "page";
             final String PRIMARY_RELEASE_DATE_MIN_PARAM = "primary_release_date.gte";
             final String PRIMARY_RELEASE_DATE_MAX_PARAM = "primary_release_date.lte";
+            final String VOTE_COUNT_MIN_PARAM = "vote_count.gte";
+            final String VOTE_COUNT_MAX_PARAM = "vote_count.lte";
             final String VOTE_AVERAGE_MIN_PARAM = "vote_average.gte";
             final String VOTE_AVERAGE_MAX_PARAM = "vote_average.lte";
 
@@ -80,6 +82,14 @@ public class FetchDiscoverMovies extends AsyncTask<Bundle, Void, ArrayList<ShowT
             if (voteAverageMax != 0) {
                 builtUri.appendQueryParameter(VOTE_AVERAGE_MAX_PARAM, Double.toString(voteAverageMax));
             }
+
+            int voteCountMin = params[0].getInt("VOTE_COUNT_MIN_PARAM");
+            if (voteCountMin != 0)
+                builtUri.appendQueryParameter(VOTE_COUNT_MIN_PARAM, Integer.toString(voteCountMin));
+
+            int voteCountMax = params[0].getInt("VOTE_COUNT_MAX_PARAM");
+            if (voteCountMax != 0)
+                builtUri.appendQueryParameter(VOTE_COUNT_MAX_PARAM, Integer.toString(voteCountMax));
 
             String minDate = params[0].getString("PRIMARY_RELEASE_DATE_MIN_PARAM");
             if (minDate != null) {

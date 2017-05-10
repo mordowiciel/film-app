@@ -132,17 +132,23 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.container_main);
+                .findFragmentByTag("mainFragment");
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (item.getItemId()) {
 
             case R.id.nav_movie:
-                mainFragment.showPopularMovies();
+
+                if (mainFragment == null || !mainFragment.isVisible())
+                    fragmentManager.popBackStackImmediate();
                 getSupportActionBar().setTitle("Movies");
+
                 break;
 
             case R.id.nav_tv:
-                mainFragment.showPopularTv();
+                if (mainFragment == null || !mainFragment.isVisible())
+                    fragmentManager.popBackStackImmediate();
                 getSupportActionBar().setTitle("TV");
                 break;
 
@@ -168,7 +174,10 @@ public class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.action_sort:
-                showSortingDialog();
+                MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+                        .findFragmentByTag("mainFragment");
+                if (mainFragment != null && mainFragment.isVisible())
+                    showSortingDialog();
                 return true;
 
             case R.id.action_filter:
