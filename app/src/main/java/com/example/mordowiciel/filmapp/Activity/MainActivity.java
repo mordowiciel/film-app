@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity
 
                 if (mainFragment == null || !mainFragment.isVisible())
                     fragmentManager.popBackStackImmediate();
+                mainFragment.showPopularMovies();
                 getSupportActionBar().setTitle("Movies");
 
                 break;
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_tv:
                 if (mainFragment == null || !mainFragment.isVisible())
                     fragmentManager.popBackStackImmediate();
+                mainFragment.showPopularTv();
                 getSupportActionBar().setTitle("TV");
                 break;
 
