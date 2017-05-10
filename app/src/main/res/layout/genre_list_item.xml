@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckedTextView
+        android:id="@+id/genre_name_checked_text"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:checked="false"
+        android:gravity="center_vertical"
+        android:text="example genre" />
+
+
+</LinearLayout>

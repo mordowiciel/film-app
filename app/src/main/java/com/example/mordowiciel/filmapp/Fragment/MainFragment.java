@@ -158,7 +158,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         // No action.
     }
 
-    public Bundle getFilterBundle(){
+    public Bundle getFilterBundle() {
         return this.filterBundle;
     }
 

@@ -130,6 +130,7 @@
 
     <EditText
         android:id="@+id/genre"
+        android:focusable="false"
         android:drawableRight="@drawable/ic_arrow_drop_down"
         android:hint="All genres"
         android:layout_width="match_parent"

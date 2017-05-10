@@ -2,7 +2,10 @@ package com.example.mordowiciel.filmapp.Fragment;
 
 
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,10 +18,15 @@ import android.widget.EditText;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import com.example.mordowiciel.filmapp.Class.Genre;
+import com.example.mordowiciel.filmapp.Class.GenreDialogAdapter;
+import com.example.mordowiciel.filmapp.Database.DatabaseContract;
+import com.example.mordowiciel.filmapp.Database.DatabaseHelper;
 import com.example.mordowiciel.filmapp.R;
 
 
@@ -32,8 +40,9 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
     private EditText dateToChange;
     private EditText minVoteAverageEditText;
     private EditText maxVoteAverageEditText;
-    private EditText minVoteCountEdit;
-    private EditText maxVoteCountEdit;
+    private EditText minVoteCountEditText;
+    private EditText maxVoteCountEditText;
+    private EditText genreEditText;
     private Button filterButton;
 
     private OnFilterSpecifiedListener mFilterListener;
@@ -78,12 +87,14 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         filterButton = (Button) rootView.findViewById(R.id.filter_button);
         minVoteAverageEditText = (EditText) rootView.findViewById(R.id.minVoteAverage);
         maxVoteAverageEditText = (EditText) rootView.findViewById(R.id.maxVoteAverage);
+        genreEditText = (EditText) rootView.findViewById(R.id.genre);
 
         startingDateEditText.setOnClickListener(this);
         endingDateEditText.setOnClickListener(this);
         filterButton.setOnClickListener(this);
         minVoteAverageEditText.setOnClickListener(this);
         maxVoteAverageEditText.setOnClickListener(this);
+        genreEditText.setOnClickListener(this);
 
 
     }
@@ -145,6 +156,10 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
                 endingDateDialog.show();
                 break;
 
+            case R.id.genre:
+                showGenreDialog();
+                break;
+
             case R.id.filter_button:
 
                 Log.e("FilterFragment", "Clicked filter button!");
@@ -204,6 +219,13 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
             default:
                 break;
         }
+    }
+
+
+    private void showGenreDialog() {
+        Log.e("ShowGenreDialog", "Showing genre dialog!");
+        GenreFragment genrePicker = new GenreFragment();
+        genrePicker.show(getFragmentManager(), "genrePick");
     }
 
     private void updateDateLabel(EditText editText, Calendar calendar) {

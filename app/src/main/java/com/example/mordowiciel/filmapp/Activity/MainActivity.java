@@ -210,7 +210,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.container_main, filterFragment, "filterFragment");
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-
     }
 
     @Override
