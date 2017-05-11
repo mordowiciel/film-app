@@ -6,8 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.mordowiciel.filmapp.BuildConfig;
-import com.example.mordowiciel.filmapp.Class.TvClass;
-import com.example.mordowiciel.filmapp.Class.TvSeasonClass;
+import com.example.mordowiciel.filmapp.Class.TvDetails;
+import com.example.mordowiciel.filmapp.Class.TvSeasonDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
+public class FetchTvDetailsById extends AsyncTask<String, Void, TvDetails> {
 
     private TvDetailsCallback mTvDetailsCallback;
 
@@ -32,11 +32,11 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
     }
 
     public interface TvDetailsCallback {
-        void onAsyncExecutedPopulateView(TvClass movieDetails);
+        void onAsyncExecutedPopulateView(TvDetails movieDetails);
     }
 
     @Override
-    protected TvClass doInBackground(String... params) {
+    protected TvDetails doInBackground(String... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -90,7 +90,7 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
         }
 
         /// 4) Get the data from the JSON string.
-        TvClass tvDetails = null;
+        TvDetails tvDetails = null;
         try {
 
             JSONObject jsonRoot = new JSONObject(tvDetailsJsonString);
@@ -130,7 +130,7 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
 
             // Get information about specific seasons.
             JSONArray seasonJsonArray = jsonRoot.getJSONArray("seasons");
-            ArrayList<TvSeasonClass> seasonsList = new ArrayList<>();
+            ArrayList<TvSeasonDetails> seasonsList = new ArrayList<>();
             for(int i = 0; i < seasonJsonArray.length(); i++){
 
                 JSONObject season = seasonJsonArray.getJSONObject(i);
@@ -156,12 +156,12 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
                     seasonPosterFullPath = seasonPosterUri.build().toString();
                 }
 
-                TvSeasonClass tvSeason = new TvSeasonClass(seasonAirDate, seasonEpisodeCount, seasonId,
+                TvSeasonDetails tvSeason = new TvSeasonDetails(seasonAirDate, seasonEpisodeCount, seasonId,
                         seasonPosterFullPath, seasonNumber);
                 seasonsList.add(tvSeason);
             }
 
-            tvDetails = new TvClass(id,title,originalTitle,overview, airdate, lastAirdate,
+            tvDetails = new TvDetails(id, title, originalTitle, overview, airdate, lastAirdate,
                     voteAverage, fullPosterPath, seasonsList);
 
         }
@@ -173,7 +173,7 @@ public class FetchTvDetailsById extends AsyncTask <String, Void, TvClass> {
     }
 
     @Override
-    protected void onPostExecute(TvClass tvDetails){
+    protected void onPostExecute(TvDetails tvDetails) {
         mTvDetailsCallback.onAsyncExecutedPopulateView(tvDetails);
     }
 

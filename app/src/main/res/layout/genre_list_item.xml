@@ -11,7 +11,7 @@
         android:layout_height="24dp"
         android:checked="false"
         android:gravity="center_vertical"
-        android:text="example genre" />
+        android:text="example showGenre" />
 
 
 </LinearLayout>

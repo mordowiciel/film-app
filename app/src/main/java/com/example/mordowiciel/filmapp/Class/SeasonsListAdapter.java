@@ -29,9 +29,9 @@ public class SeasonsListAdapter extends RecyclerView.Adapter<SeasonsListAdapter.
 
         public SeasonViewHolder(View view) {
             super(view);
-            this.cardView = (CardView) view.findViewById(R.id.image_item_cardview);
-            this.imageView = (ImageView) view.findViewById(R.id.image_item_imageview);
-            this.textView = (TextView) view.findViewById(R.id.image_item_textview);
+            this.cardView = (CardView) view.findViewById(R.id.show_thumbnail_item_cardview);
+            this.imageView = (ImageView) view.findViewById(R.id.show_thumbnail_item_imageview);
+            this.textView = (TextView) view.findViewById(R.id.show_thumbnail_item_textview);
         }
     }
 
@@ -43,7 +43,7 @@ public class SeasonsListAdapter extends RecyclerView.Adapter<SeasonsListAdapter.
     @Override
     public SeasonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.image_item, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.show_thumbnail_image_item, null);
         SeasonViewHolder seasonViewHolder = new SeasonViewHolder(view);
         return seasonViewHolder;
     }

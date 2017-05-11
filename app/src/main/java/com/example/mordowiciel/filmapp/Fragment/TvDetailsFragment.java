@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.mordowiciel.filmapp.Class.SeasonsListAdapter;
 import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
-import com.example.mordowiciel.filmapp.Class.TvClass;
+import com.example.mordowiciel.filmapp.Class.TvDetails;
 import com.example.mordowiciel.filmapp.Fetch.FetchTvDetailsById;
 import com.example.mordowiciel.filmapp.R;
 import com.squareup.picasso.Picasso;
@@ -81,7 +81,7 @@ public class TvDetailsFragment extends Fragment {
         return rootView;
     }
 
-    public void populateView(TvClass tvDetails) {
+    public void populateView(TvDetails tvDetails) {
 
         Activity mActivity = getActivity();
 

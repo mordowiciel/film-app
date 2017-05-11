@@ -2,10 +2,7 @@ package com.example.mordowiciel.filmapp.Fragment;
 
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,15 +15,10 @@ import android.widget.EditText;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import com.example.mordowiciel.filmapp.Class.Genre;
-import com.example.mordowiciel.filmapp.Class.GenreDialogAdapter;
-import com.example.mordowiciel.filmapp.Database.DatabaseContract;
-import com.example.mordowiciel.filmapp.Database.DatabaseHelper;
 import com.example.mordowiciel.filmapp.R;
 
 
@@ -82,14 +74,14 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         super.onStart();
 
         calendar = Calendar.getInstance();
-        startingDateEditText = (EditText) rootView.findViewById(R.id.beginningDate);
-        endingDateEditText = (EditText) rootView.findViewById(R.id.endingDate);
-        filterButton = (Button) rootView.findViewById(R.id.filter_button);
-        minVoteCountEditText = (EditText) rootView.findViewById(R.id.minVoteCount);
-        maxVoteCountEditText = (EditText) rootView.findViewById(R.id.maxVoteCount);
-        minVoteAverageEditText = (EditText) rootView.findViewById(R.id.minVoteAverage);
-        maxVoteAverageEditText = (EditText) rootView.findViewById(R.id.maxVoteAverage);
-        genreEditText = (EditText) rootView.findViewById(R.id.genre);
+        startingDateEditText = (EditText) rootView.findViewById(R.id.filter_fragment_beginning_date);
+        endingDateEditText = (EditText) rootView.findViewById(R.id.filter_fragment_ending_date);
+        filterButton = (Button) rootView.findViewById(R.id.filter_fragment_button);
+        minVoteCountEditText = (EditText) rootView.findViewById(R.id.filter_fragment_min_vote_count);
+        maxVoteCountEditText = (EditText) rootView.findViewById(R.id.filter_fragment_max_vote_count);
+        minVoteAverageEditText = (EditText) rootView.findViewById(R.id.filter_fragment_min_vote_average);
+        maxVoteAverageEditText = (EditText) rootView.findViewById(R.id.filter_fragment_max_vote_average);
+        genreEditText = (EditText) rootView.findViewById(R.id.filter_fragment_show_genre);
 
         startingDateEditText.setOnClickListener(this);
         endingDateEditText.setOnClickListener(this);
@@ -109,7 +101,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
 
         switch (view.getId()) {
 
-            case R.id.beginningDate:
+            case R.id.filter_fragment_beginning_date:
                 dateToChange = startingDateEditText;
                 DatePickerDialog startingDateDialog = new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -133,7 +125,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
 
                 break;
 
-            case R.id.endingDate:
+            case R.id.filter_fragment_ending_date:
                 dateToChange = endingDateEditText;
                 DatePickerDialog endingDateDialog = new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -156,13 +148,14 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
                 endingDateDialog.show();
                 break;
 
-            case R.id.genre:
+            case R.id.filter_fragment_show_genre:
                 showGenreDialog();
                 break;
 
-            case R.id.filter_button:
+            case R.id.filter_fragment_button:
 
                 Log.e("FilterFragment", "Clicked filter button!");
+
                 String startingDateString;
                 if (startingDateEditText.getText().toString().equals(""))
                     startingDateString = null;
@@ -211,12 +204,17 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
                 try {
                     Date startingDate = sourceFormatter.parse(startingDateEditText.getText().toString());
                     startingDateString = targetFormatter.format(startingDate);
+                } catch (ParseException e) {
+                    Log.e("ParseException", e.getMessage());
+                }
 
+                try {
                     Date endingDate = sourceFormatter.parse(endingDateEditText.getText().toString());
                     endingDateString = targetFormatter.format(endingDate);
                 } catch (ParseException e) {
                     Log.e("ParseException", e.getMessage());
                 }
+
 
                 Log.e("StartingDateString", "" + startingDateString);
                 Log.e("EndingDateString", "" + endingDateString);
@@ -269,7 +267,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener,
         updateDateLabel(dateToChange, calendar);
         calendar = Calendar.getInstance();
     }
-
 
 
 }

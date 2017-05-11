@@ -129,7 +129,7 @@ public class FetchGenres extends AsyncTask<Void, Void, Map<String, String>> {
             ContentValues values = new ContentValues();
             values.put(DatabaseContract.GenreTable._ID, key);
             values.put(DatabaseContract.GenreTable.COLUMN_NAME, genresMap.get(key));
-            Log.e("Genre: ", "ID: " + key + ", Name: " + genresMap.get(key));
+            Log.e("ShowGenre: ", "ID: " + key + ", Name: " + genresMap.get(key));
             db.insert(DatabaseContract.GenreTable.TABLE_NAME, null, values);
         }
 

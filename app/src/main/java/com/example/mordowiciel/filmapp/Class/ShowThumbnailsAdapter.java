@@ -14,21 +14,21 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ImageAdapter extends ArrayAdapter<ShowThumbnail> {
+public class ShowThumbnailsAdapter extends ArrayAdapter<ShowThumbnail> {
 
 
-    public ImageAdapter (Context ctx, int textViewResourceId, ArrayList <ShowThumbnail> showThumbnails){
+    public ShowThumbnailsAdapter(Context ctx, int textViewResourceId, ArrayList<ShowThumbnail> showThumbnails) {
         super(ctx, textViewResourceId, showThumbnails);
     }
 
     public View getView (int position, View convertView, ViewGroup parent) {
 
         if (convertView == null){
-            convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.image_item, parent, false);
+            convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.show_thumbnail_image_item, parent, false);
         }
 
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.image_item_imageview);
-        TextView textView = (TextView) convertView.findViewById(R.id.image_item_textview);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.show_thumbnail_item_imageview);
+        TextView textView = (TextView) convertView.findViewById(R.id.show_thumbnail_item_textview);
 
         ShowThumbnail item = getItem(position);
 

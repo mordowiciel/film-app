@@ -214,8 +214,8 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit,
-                R.anim.pop_enter, R.anim.pop_exit);
+        fragmentTransaction.setCustomAnimations(R.anim.filter_fragment_enter, R.anim.filter_fragment_exit,
+                R.anim.filter_fragment_pop_enter, R.anim.filter_fragment_pop_exit);
         FilterFragment filterFragment = new FilterFragment();
         filterFragment.setArguments(mainFragment.getFilterBundle());
         fragmentTransaction.replace(R.id.container_main, filterFragment, "filterFragment");

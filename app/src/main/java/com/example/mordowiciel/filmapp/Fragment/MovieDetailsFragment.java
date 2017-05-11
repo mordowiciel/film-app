@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.mordowiciel.filmapp.Class.MovieDetails;
 import com.example.mordowiciel.filmapp.Fetch.FetchMovieDetailsById;
-import com.example.mordowiciel.filmapp.Class.MovieClass;
 import com.example.mordowiciel.filmapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -40,7 +40,7 @@ public class MovieDetailsFragment extends Fragment {
         return rootView;
     }
 
-    public void populateView(MovieClass movieDetails) {
+    public void populateView(MovieDetails movieDetails) {
 
         // Populate the view in the DetailsFragment.
 

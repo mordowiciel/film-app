@@ -4,12 +4,12 @@ package com.example.mordowiciel.filmapp.Class;
  * Created by szyma on 10.05.2017.
  */
 
-public class Genre {
+public class ShowGenre {
 
     private int genreId;
     private String genreName;
 
-    public Genre(int genreId, String genreName) {
+    public ShowGenre(int genreId, String genreName) {
         this.genreId = genreId;
         this.genreName = genreName;
     }

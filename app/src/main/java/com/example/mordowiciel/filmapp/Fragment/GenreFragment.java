@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 
-import com.example.mordowiciel.filmapp.Class.Genre;
+import com.example.mordowiciel.filmapp.Class.ShowGenre;
 import com.example.mordowiciel.filmapp.Class.GenreDialogAdapter;
 import com.example.mordowiciel.filmapp.Database.DatabaseContract;
 import com.example.mordowiciel.filmapp.Database.DatabaseHelper;
@@ -29,15 +28,15 @@ import java.util.ArrayList;
 
 public class GenreFragment extends DialogFragment {
 
-    ArrayList<Genre> dbGenreList;
-    ArrayList<Genre> selectedGenreList;
+    ArrayList<ShowGenre> dbShowGenreList;
+    ArrayList<ShowGenre> selectedShowGenreList;
 
 
     public GenreFragment() {
 
     }
 
-    private ArrayList<Genre> getGenresFromDatabase() {
+    private ArrayList<ShowGenre> getGenresFromDatabase() {
 
         DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -52,28 +51,28 @@ public class GenreFragment extends DialogFragment {
                 null
         );
 
-        ArrayList<Genre> genreList = new ArrayList<>();
+        ArrayList<ShowGenre> showGenreList = new ArrayList<>();
         while (cursor.moveToNext()) {
             int genreId = cursor.getInt(cursor
                     .getColumnIndexOrThrow(DatabaseContract.GenreTable._ID));
             String genreName = cursor.getString(cursor
                     .getColumnIndexOrThrow(DatabaseContract.GenreTable.COLUMN_NAME));
 
-            Genre genre = new Genre(genreId, genreName);
-            genreList.add(genre);
+            ShowGenre showGenre = new ShowGenre(genreId, genreName);
+            showGenreList.add(showGenre);
         }
 
-        return genreList;
+        return showGenreList;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        dbGenreList = getGenresFromDatabase();
-        selectedGenreList = new ArrayList<>();
+        dbShowGenreList = getGenresFromDatabase();
+        selectedShowGenreList = new ArrayList<>();
 
         final GenreDialogAdapter adapter = new GenreDialogAdapter(getActivity(),
-                R.layout.genre_list_item, dbGenreList);
+                R.layout.genre_list_item, dbShowGenreList);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -91,7 +90,7 @@ public class GenreFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 GenreDialogAdapter genreAdapter = (GenreDialogAdapter) parent.getAdapter();
-                Genre item = genreAdapter.getItem(position);
+                ShowGenre item = genreAdapter.getItem(position);
                 Log.e("onItemClick", "Clicked " + item.getGenreName());
                 CheckedTextView checkedTextView = (CheckedTextView)
                         view.findViewById(R.id.genre_name_checked_text);
@@ -102,10 +101,10 @@ public class GenreFragment extends DialogFragment {
 
                 if (checkedTextView.isChecked()) {
                     checkedTextView.setCheckMarkDrawable(null);
-                    //selectedGenreList.remove(item);
+                    //selectedShowGenreList.remove(item);
                 } else {
                     checkedTextView.setCheckMarkDrawable(checked);
-                    //selectedGenreList.add(item);
+                    //selectedShowGenreList.add(item);
                 }
             }
         });

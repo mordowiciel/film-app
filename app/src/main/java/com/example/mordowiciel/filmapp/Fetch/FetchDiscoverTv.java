@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mordowiciel.filmapp.BuildConfig;
-import com.example.mordowiciel.filmapp.Class.ImageAdapter;
+import com.example.mordowiciel.filmapp.Class.ShowThumbnailsAdapter;
 import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 
 import org.json.JSONArray;
@@ -28,9 +28,10 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class FetchDiscoverTv extends AsyncTask<Bundle, Void, ArrayList<ShowThumbnail>> {
 
-    private ImageAdapter imageAdapter;
-    public FetchDiscoverTv(ImageAdapter imageAdapter) {
-        this.imageAdapter = imageAdapter;
+    private ShowThumbnailsAdapter showThumbnailsAdapter;
+
+    public FetchDiscoverTv(ShowThumbnailsAdapter showThumbnailsAdapter) {
+        this.showThumbnailsAdapter = showThumbnailsAdapter;
     }
 
     @Override
@@ -146,7 +147,7 @@ public class FetchDiscoverTv extends AsyncTask<Bundle, Void, ArrayList<ShowThumb
     @Override
     public void onPostExecute (ArrayList<ShowThumbnail> resultArray) {
         for (ShowThumbnail showItem : resultArray){
-            imageAdapter.add(showItem);
+            showThumbnailsAdapter.add(showItem);
         }
     }
 }

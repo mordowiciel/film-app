@@ -11,9 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.mordowiciel.filmapp.Class.TvClass;
+import com.example.mordowiciel.filmapp.Class.MovieDetails;
+import com.example.mordowiciel.filmapp.Class.TvDetails;
 import com.example.mordowiciel.filmapp.Fetch.FetchMovieDetailsById;
-import com.example.mordowiciel.filmapp.Class.MovieClass;
 import com.example.mordowiciel.filmapp.Fetch.FetchTvDetailsById;
 import com.example.mordowiciel.filmapp.Fragment.MovieDetailsFragment;
 import com.example.mordowiciel.filmapp.Fragment.TvDetailsFragment;
@@ -87,7 +87,7 @@ public class ShowDetailsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAsyncExecutedPopulateView(MovieClass movieDetails) {
+    public void onAsyncExecutedPopulateView(MovieDetails movieDetails) {
 
         MovieDetailsFragment movieDetailsFragment =
                 (MovieDetailsFragment) getSupportFragmentManager().
@@ -96,7 +96,7 @@ public class ShowDetailsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAsyncExecutedPopulateView(TvClass tvDetails) {
+    public void onAsyncExecutedPopulateView(TvDetails tvDetails) {
 
         TvDetailsFragment tvDetailsFragment =
                 (TvDetailsFragment) getSupportFragmentManager()

@@ -2,14 +2,14 @@ package com.example.mordowiciel.filmapp.Class;
 
 import java.util.ArrayList;
 
-public class TvClass extends ShowDetails {
+public class TvDetails extends ShowDetails {
 
     private String lastAirDate;
-    private ArrayList<TvSeasonClass> seasonsList;
+    private ArrayList<TvSeasonDetails> seasonsList;
 
-    public TvClass(String id, String title, String originalTitle, String overview,
-                   String releaseDate, String lastAirDate, double voteAverage, String posterLink,
-                   ArrayList<TvSeasonClass> seasonsList) {
+    public TvDetails(String id, String title, String originalTitle, String overview,
+                     String releaseDate, String lastAirDate, double voteAverage, String posterLink,
+                     ArrayList<TvSeasonDetails> seasonsList) {
 
         super(id, title, originalTitle, overview, releaseDate, voteAverage, posterLink);
 
@@ -21,7 +21,7 @@ public class TvClass extends ShowDetails {
     public ArrayList<ShowThumbnail> getSeasonsThumbnails() {
 
         ArrayList<ShowThumbnail> seasonsThumbnails = new ArrayList<>();
-        for (TvSeasonClass season: seasonsList) {
+        for (TvSeasonDetails season : seasonsList) {
 
             String seasonID = season.getSeasonId();
             String posterPath = season.getPosterPath();

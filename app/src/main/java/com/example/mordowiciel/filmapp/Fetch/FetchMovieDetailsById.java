@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.mordowiciel.filmapp.BuildConfig;
-import com.example.mordowiciel.filmapp.Class.MovieClass;
+import com.example.mordowiciel.filmapp.Class.MovieDetails;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,12 +18,12 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> {
+public class FetchMovieDetailsById extends AsyncTask<String, Void, MovieDetails> {
 
     private MovieDetailsCallback mMovieDetailsCallback;
 
     public interface MovieDetailsCallback {
-        void onAsyncExecutedPopulateView(MovieClass movieDetails);
+        void onAsyncExecutedPopulateView(MovieDetails movieDetails);
     }
 
 
@@ -32,7 +32,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
     }
 
     @Override
-    protected MovieClass doInBackground (String... params) {
+    protected MovieDetails doInBackground(String... params) {
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -97,7 +97,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
         }
 
         // 4) Get data from JSON string.
-        MovieClass movieDetails = null;
+        MovieDetails movieDetails = null;
 
         try {
 
@@ -137,8 +137,8 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
             if (releaseDate.equals("null") || releaseDate.equals(""))
                 releaseDate = "No info found.";
 
-            // 5) Save values to returned MovieClass.
-            movieDetails = new MovieClass(id, title, originalTitle, overview, releaseDate,
+            // 5) Save values to returned MovieDetails.
+            movieDetails = new MovieDetails(id, title, originalTitle, overview, releaseDate,
                     voteAverage, posterFullPath);
 
         }
@@ -151,7 +151,7 @@ public class FetchMovieDetailsById extends AsyncTask <String, Void, MovieClass> 
 
     //Update fragment UI at the end of fetching data.
     @Override
-    protected void onPostExecute (MovieClass movieDetails) {
+    protected void onPostExecute(MovieDetails movieDetails) {
 
         mMovieDetailsCallback.onAsyncExecutedPopulateView(movieDetails);
     }

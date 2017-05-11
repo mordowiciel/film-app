@@ -15,9 +15,8 @@ import android.widget.GridView;
 import com.example.mordowiciel.filmapp.Activity.ShowDetailsActivity;
 import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverMovies;
 import com.example.mordowiciel.filmapp.Fetch.FetchDiscoverTv;
-import com.example.mordowiciel.filmapp.Class.ImageAdapter;
+import com.example.mordowiciel.filmapp.Class.ShowThumbnailsAdapter;
 import com.example.mordowiciel.filmapp.Class.InfiniteScrollListener;
-import com.example.mordowiciel.filmapp.Fetch.FetchGenres;
 import com.example.mordowiciel.filmapp.R;
 import com.example.mordowiciel.filmapp.Class.ShowThumbnail;
 
@@ -28,7 +27,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private FetchDiscoverMovies fetchDiscoverMovies;
     private FetchDiscoverTv fetchDiscoverTv;
-    private ImageAdapter imageAdapter;
+    private ShowThumbnailsAdapter showThumbnailsAdapter;
     private GridView gridView;
     ArrayList<ShowThumbnail> showThumbnails;
     private boolean tvIsShown;
@@ -71,8 +70,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         gridView = (GridView) rootView.findViewById(R.id.fragment_main_gridview);
-        imageAdapter = new ImageAdapter(getActivity(), R.layout.image_item, showThumbnails);
-        gridView.setAdapter(imageAdapter);
+        showThumbnailsAdapter = new ShowThumbnailsAdapter(getActivity(), R.layout.show_thumbnail_image_item, showThumbnails);
+        gridView.setAdapter(showThumbnailsAdapter);
 
         return rootView;
     }
@@ -88,8 +87,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-        String showId = imageAdapter.getItem(position).getShowId();
-        String showTitle = imageAdapter.getItem(position).getShowTitle();
+        String showId = showThumbnailsAdapter.getItem(position).getShowId();
+        String showTitle = showThumbnailsAdapter.getItem(position).getShowTitle();
 
         Bundle intentExtras = new Bundle();
         intentExtras.putString("SHOW_ID", showId);
@@ -116,11 +115,11 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         Log.e("Sorting parameter", String.valueOf(filterBundle.getString("SORTING_PARAM")));
 
         if (movieIsShown) {
-            fetchDiscoverMovies = new FetchDiscoverMovies(imageAdapter);
+            fetchDiscoverMovies = new FetchDiscoverMovies(showThumbnailsAdapter);
             fetchDiscoverMovies.execute(filterBundle);
         }
         if (tvIsShown) {
-            fetchDiscoverTv = new FetchDiscoverTv(imageAdapter);
+            fetchDiscoverTv = new FetchDiscoverTv(showThumbnailsAdapter);
             fetchDiscoverTv.execute(filterBundle);
         }
         return true;
@@ -179,13 +178,13 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     public void setDataFilter(Bundle filterBundle) {
         this.filterBundle = filterBundle;
         setInitialScrollerState();
-        imageAdapter.clear();
+        showThumbnailsAdapter.clear();
     }
 
     public void setSortingParameter(String parameter) {
         this.filterBundle.putString("SORTING_PARAM", parameter);
         setInitialScrollerState();
-        imageAdapter.clear();
+        showThumbnailsAdapter.clear();
     }
 
     public void showPopularMovies() {
@@ -193,7 +192,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         tvIsShown = false;
         filterBundle.putString("SORTING_PARAM", "popularity.desc");
         setInitialScrollerState();
-        imageAdapter.clear();
+        showThumbnailsAdapter.clear();
     }
 
     public void showPopularTv() {
@@ -201,7 +200,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
         tvIsShown = true;
         filterBundle.putString("SORTING_PARAM", "popularity.desc");
         setInitialScrollerState();
-        imageAdapter.clear();
+        showThumbnailsAdapter.clear();
     }
 
 }

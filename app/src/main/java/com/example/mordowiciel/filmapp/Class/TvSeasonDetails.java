@@ -2,7 +2,7 @@ package com.example.mordowiciel.filmapp.Class;
 
 import java.util.ArrayList;
 
-public class TvSeasonClass {
+public class TvSeasonDetails {
 
     private String airDate;
     private int episodeCount;
@@ -10,8 +10,8 @@ public class TvSeasonClass {
     private String posterPath;
     private int seasonNumber;
 
-    public TvSeasonClass(String airDate, int episodeCount, String seasonId, String posterPath,
-                         int seasonNumber){
+    public TvSeasonDetails(String airDate, int episodeCount, String seasonId, String posterPath,
+                           int seasonNumber) {
 
         this.airDate = airDate;
         this.episodeCount = episodeCount;
